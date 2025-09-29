@@ -46,6 +46,8 @@ Resultat: 5
 
 4. **Se resultatet** som visas på skärmen
 
+5. **Avsluta programmet** med att skriva q eller quit
+
 ## Hur man skapar en funktion i Dart
 
 I Dart skapar du funktioner med följande syntax:
