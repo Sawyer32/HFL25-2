@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:v01/v01.dart' as v01;
 
 void main(List<String> arguments) {
-  print('Jespers miniräknare!');
+  print('Jespers kalkylator!');
   print('* För att avsluta skriv q eller quit \n');
   bool isRunning = true;
   while(isRunning) {

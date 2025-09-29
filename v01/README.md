@@ -1,10 +1,10 @@
-# Miniräknare Terminal
+# Kalkylator Terminal
 
-En enkel termnialbaserad miniräknare skriven i Dart som kan hantera grundläggande matematiska uttryck.
+En enkel termnialbaserad Kalkylator skriven i Dart som kan hantera grundläggande matematiska uttryck.
 
 ## Vad programmet kan göra
 
-Miniräknaren kan hantera följande matematiska operationer:
+Kalkylatorn kan hantera följande matematiska operationer:
 * **Addition** (`+`)
 * **Subtraktion** (`-`)
 * **Multiplikation** (`*`)
