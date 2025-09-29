@@ -7,7 +7,7 @@ void main(List<String> arguments) {
   print('För att avsluta skriv q eller quit \n');
   bool isRunning = true;
   while(isRunning) {
-    print('Ange ett matematiskt uttryck');
+    stdout.write('Ange ett matematiskt uttryck: ');
     String input = stdin.readLineSync() ?? "";
     if (input == "q" || input == "quit") {
       isRunning = false;
