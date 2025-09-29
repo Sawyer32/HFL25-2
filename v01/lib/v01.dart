@@ -23,6 +23,8 @@ num? calculate(String input) {
     case "/":
       result = divide(double.parse(left), double.parse(right));
       break;
+    case "%":
+      result = modulus(int.parse(left), int.parse(right));
     default: 
       result = null;
   }
@@ -60,4 +62,8 @@ int multiply(int a, int b) {
 
 double divide(double a, double b) {
   return a / b;
+}
+
+int modulus(int a, int b) {
+  return a % b;
 }
