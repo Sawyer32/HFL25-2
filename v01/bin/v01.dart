@@ -4,7 +4,7 @@ import 'package:v01/v01.dart' as v01;
 
 void main(List<String> arguments) {
   print('Jespers miniräknare!');
-  print('För att avsluta skriv q eller quit \n');
+  print('* För att avsluta skriv q eller quit \n');
   bool isRunning = true;
   while(isRunning) {
     stdout.write('Ange ett matematiskt uttryck: ');
