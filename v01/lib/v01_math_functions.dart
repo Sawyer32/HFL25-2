@@ -11,9 +11,15 @@ int multiply(int a, int b) {
 }
 
 double divide(double a, double b) {
+  if (b == 0) {
+    throw "Kan inte dela med noll..\n";
+  }
   return a / b;
 }
 
 int modulus(int a, int b) {
+  if (b == 0) {
+    throw "Kan inte dela med noll..";
+  }
   return a % b;
 }
