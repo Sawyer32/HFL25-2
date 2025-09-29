@@ -61,6 +61,7 @@ void helloWorld() {
 void greeting(String name) {
   print('Hej, $name')
 }
+
 // Exempel på att använda funktion med parameter
 // Resultat: Hej, John Doe
 greeting("John Doe");
