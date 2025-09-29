@@ -1,41 +1,63 @@
-num calculate(String input) {
-  List<String> values = splitString(input);
-  final String left = values[0];
-  final String exp = values[1];
-  final String right = values[2];
-
-  Map<String, num> expressions = ({
-    '+': addition(num.parse(left), num.parse(right)),
-    '-': subtract(num.parse(left), num.parse(right)),
-    '*': multiply(num.parse(left), num.parse(right)),
-    '/': divide(num.parse(left), num.parse(right))
-  });
-
-  final result = expressions[exp];
-  if (result != null) {
-    return result;
-  } else {
-    print("Jag känner inte igen uttrycket");
-    return 0;
+num? calculate(String input) {
+  List<String> values = parseInput(input);
+  
+  if (values.isEmpty) {
+    return null;
   }
+
+  final String left = values[0];
+  final String op = values[1];
+  final String right = values[2];
+  num? result;
+
+  switch (op) {
+    case "+":
+      result = addition(int.parse(left), int.parse(right));      
+      break;
+    case "-":
+      result = subtract(int.parse(left), int.parse(right));
+      break;
+    case "*":
+      result = multiply(int.parse(left), int.parse(right));
+      break;
+    case "/":
+      result = divide(double.parse(left), double.parse(right));
+      break;
+    default: 
+      result = null;
+  }
+  
+  return result;
+
 }
 
-List<String> splitString(String value) {
-  return value.split(' ');
+List<String> parseInput(String input) {
+  final reg = RegExp(r'\s*(\d+)\s*([^0-9])\s*(\d+)');
+  final res = reg.firstMatch(input);
+  
+  if (res == null) {
+    return [];
+  }
+
+  final String leftValue = res.group(1)!;
+  final String op = res.group(2)!;
+  final String rightValue = res.group(3)!;
+
+  return [leftValue, op, rightValue];
 }
 
-num addition(num a, num b) {
+int addition(int a, int b) {
   return a + b;
 }
 
-num subtract(num a, num b) {
+int subtract(int a, int b) {
   return a - b;
 }
 
-num multiply(num a, num b) {
+int multiply(int a, int b) {
   return a * b;
 }
 
-num divide(num a, num b) {
+double divide(double a, double b) {
   return a / b;
 }
