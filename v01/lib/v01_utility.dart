@@ -1,0 +1,14 @@
+List<String> parseInput(String input) {
+  final reg = RegExp(r'\s*(\d+)\s*([^0-9])\s*(\d+)');
+  final res = reg.firstMatch(input);
+  
+  if (res == null) {
+    return [];
+  }
+
+  final String leftValue = res.group(1)!;
+  final String op = res.group(2)!;
+  final String rightValue = res.group(3)!;
+
+  return [leftValue, op, rightValue];
+}
