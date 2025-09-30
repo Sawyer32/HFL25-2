@@ -4,7 +4,7 @@ En enkel termnialbaserad Kalkylator skriven i Dart som kan hantera grundläggand
 
 ## Vad programmet kan göra
 
-Kalkylatorn kan hantera följande matematiska operationer:
+Kalkylatorn kan hantera följande matematiska operationer (**Endast positiva tal**):
 * **Addition** (`+`)
 * **Subtraktion** (`-`)
 * **Multiplikation** (`*`)

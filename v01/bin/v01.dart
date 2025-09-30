@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:v01/v01.dart' as v01;
 
 void main(List<String> arguments) {
-  print('Jespers kalkylator!');
-  print('* För att avsluta skriv q eller quit \n');
+  print("Jespers kalkylator!");
+  print("* För att avsluta skriv q eller quit \n");
   bool isRunning = true;
   while(isRunning) {
-    stdout.write('Ange ett matematiskt uttryck: ');
+    stdout.write("Ange ett matematiskt uttryck: ");
     String input = stdin.readLineSync() ?? "";
     if (input == "q" || input == "quit") {
       isRunning = false;
@@ -16,7 +16,7 @@ void main(List<String> arguments) {
       if (result == null) {
         print("Uträkningen misslyckades. Känner inte igen uttrycket $input");
       } else {
-        print('Resultat: $result \n');
+        print("Resultat: $result \n");
       }
     }
   }
