@@ -3,91 +3,9 @@ import 'dart:io';
 
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:v02/v02.dart' as v02;
-import 'package:v02/v02_models.dart';
+import 'package:v02/v02_models.dart' as v02_models;
 
-class Menu {
-  final String title;
-  final List<Option> options;
 
-  Menu(this.title, this.options);
-
-  Future<void> display() async {
-    while (true) {
-      print('\n$title');
-      for (var i = 0; i < options.length; i++) {
-        print('${i + 1}. ${options[i].title}');
-      }
-      stdout.write('Välj ett alternativ: ');
-      final input = stdin.readLineSync();
-      final choice = int.tryParse(input ?? '');
-      if (choice != null && choice > 0 && choice <= options.length) {
-        options[choice - 1].select();
-        if (options[choice - 1].isExit) break;
-      } else {
-        print('Ogiltigt val, försök igen.');
-      }
-    }
-  }
-}
-
-class Option {
-  final String title;
-  final Function? action;
-  final Menu? nextMenu;
-  final bool isExit;
-
-  Option(this.title, {this.action, this.nextMenu, this.isExit = false});
-
-  Future<void> select() async {
-    if (action != null) {
-      await action!();
-    }
-    if (nextMenu != null) {
-      await nextMenu!.display();
-    }
-  }
-}
-
-class HeroListMenu {
-  final String title;
-  final List<Hero> heroes;
-  final List<Option> options;
-
-  HeroListMenu(this.title, this.heroes, this.options);
-
-  void display() {
-    print('\n$title');
-    for (var hero in heroes) {
-      print('Namn: ${hero.name}, Styrka: ${hero.strength}, Ras: ${hero.race}');
-    }
-  }
-
-  static Future<HeroListMenu> fromDatabase(Database db) async {
-    final List<Map<String, Object?>> maps = await db.query('heroes');
-    final heroes = maps.map((m) => Hero(m['name'] as String, m['strength'] as int, m['race'] as String)).toList();
-    final options = [
-      Option('Tillbaka', isExit: true),
-    ];
-    return HeroListMenu('Lista över hjältar', heroes, options);
-  }
-}
-
-class Hero {
-  final String name;
-  final int strength;
-  final String race;
-
-  Hero(this.name, this.strength, this.race);
-
-  static Future<String> saveHeroToDatabase(Hero hero, Database db) async {
-    await db.insert('heroes', <String, Object?>{
-      'name': hero.name,
-      'strength': hero.strength,
-      'race': hero.race,
-    });
-    return hero.name;
-  }
-}
 
 Future<void> main() async {
   sqfliteFfiInit();
@@ -106,23 +24,23 @@ Future<void> main() async {
     await db.insert('heroes', {'name': 'TestHero', 'strength': 5, 'race': 'Människa'});
   }
   bool isRunning = true;
-  final settingsMenu = Menu('Inställningar', [
-    Option('Byt språk', action: () => print('Språk ändrat')),
-    Option('Tillbaka', isExit: true),
+  final settingsMenu = v02_models.Menu('Inställningar', [
+    v02_models.Option('Byt språk', action: () => print('Språk ändrat')),
+    v02_models.Option('Tillbaka', isExit: true),
   ]);
 
-  final mainMenu = Menu('Huvudmeny', [
-    Option('Lägg till hjälte', action: () async {
+  final mainMenu = v02_models.Menu('Huvudmeny', [
+    v02_models.Option('Lägg till hjälte', action: () async {
       await createHero();
     }),
-    Option('Visa alla hjältar', action: () async {
+    v02_models.Option('Visa alla hjältar', action: () async {
       await listHeroes(db);
       // final heroes = await db.query('heroes');
       // print(heroes.map((e) => 'Namn: ${e['name']}, Styrka: ${e['strength']}, Ras: ${e['race']}').join('\n'));
     }),
-    Option('Inställningar', nextMenu: settingsMenu),
-    Option('Visa info', action: () => print('Info om programmet')),
-    Option('Avsluta', isExit: true),
+    v02_models.Option('Inställningar', nextMenu: settingsMenu),
+    v02_models.Option('Visa info', action: () => print('Info om programmet')),
+    v02_models.Option('Avsluta', isExit: true),
   ]);
 
   
@@ -149,7 +67,7 @@ Future<void> createHero() async {
   stdout.write('Ange hjälten ras (Människa, Alv, Dvärg): ');
   final race = stdin.readLineSync() ?? 'Människa';
 
-  final hero = Hero(name, strength, race);
+  final hero = v02_models.Hero(name, strength, race);
   sqfliteFfiInit();
   var factory = databaseFactoryFfi;
   var db = await factory.openDatabase('v02.db');
