@@ -5,7 +5,8 @@ import 'package:v02/v02_models.dart';
 MenuOptions mainMenu() {
   print("1. Skapa hjälte");
   print("2. Visa alla hjältar");
-  print("3. Avsluta");
+  print("3. Sök hjältar");
+  print("4. Avsluta");
   final input = v02_helpers.selectOption();
 
   switch (input) {
@@ -16,6 +17,9 @@ MenuOptions mainMenu() {
       v02_helpers.clearTerminal();
       return MenuOptions.list;
     case "3":
+      v02_helpers.clearTerminal();
+      return MenuOptions.search;
+    case "4":
       return MenuOptions.exit;
     default: 
       v02_helpers.clearTerminal();
@@ -95,12 +99,39 @@ Future<MenuOptions> createHero() async {
   return MenuOptions.main;
 }
 
-MenuOptions searchHeroMenu() {
+Future<MenuOptions> searchHeroMenu() async {
   v02_helpers.clearTerminal();
   while (true) {
-    stdout.writeln("0. Tillbaka");
-    final String input = v02_helpers.selectOption();
+    var heroes = await v02_helpers.readHeroesFromJson();
+    stdout.writeln("=== Sök bland hjältarna ===");
+    if (heroes.isEmpty) {
+      stdout.writeln("Inga hjältar finns.");
+    } 
+    stdout.write("Sökord: ");
+    final String searchParam = stdin.readLineSync() ?? "";
+    if (searchParam == "0") {
+      return MenuOptions.main;
+    }
 
-    if (input == 0) return MenuOptions.main;   
+    final query = searchParam.toLowerCase();
+
+    final matches = heroes.where((hero) {
+      final name = (hero['name'] ?? '').toString().toLowerCase();
+      return name == query;
+    }).toList();
+
+    if (matches.isEmpty) {
+      stdout.writeln("Ingen hjälte hittades");
+    }
+
+    for (var hero in matches) {
+      final attributes = (hero['attributes'] ?? {}) as Map<String, dynamic>;
+      final type = (hero['type'] ?? {}) as Map<String, dynamic>;
+      stdout.writeln("Namn: ${hero['name']}, Level: ${hero['level']}, Styrka: ${attributes['strength']}, Stamina: ${attributes['stamina']}, Ras: ${type['race']}, Faktion: ${type['faction']}");
+    }
+
+    stdout.writeln("Tryck Enter för att söka igen...");   
+    stdin.readLineSync();
+    v02_helpers.clearTerminal();        
   }
 }
