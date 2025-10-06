@@ -47,3 +47,13 @@ MenuOptions createHeroMenu() {
     print("Ogiltigt val");
   }
 }
+
+MenuOptions searchHeroMenu() {
+  v02_helpers.clearTerminal();
+  while (true) {
+    stdout.writeln("0. Tillbaka");
+    final String input = v02_helpers.selectOption();
+
+    if (input == 0) return MenuOptions.main;   
+  }
+}
