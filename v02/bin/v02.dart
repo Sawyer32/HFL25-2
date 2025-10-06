@@ -9,24 +9,25 @@ void main(List<String> arguments) {
   gameHandler();
 }
 
-
-
-
-
 void gameHandler() {
   bool isRunning = true;
-  String input = "";
+  String input = "0";
   v02_helpers.clearTerminal();
 
   while(isRunning) {
     switch(input) {
+      case "0":
+        input = v02_menu.mainMenu();
+        break;
       case "2":
         input = v02_menu.listHeroesMenu();
+        break;
       case "3":
         exit(0);
       default:
-        input = v02_menu.mainMenu();
-        break;
+        print("Ogiltigt val");
+        stdout.write("Välj alternativ: ");
+        input = stdin.readLineSync() ?? "";
     }
   }
 }

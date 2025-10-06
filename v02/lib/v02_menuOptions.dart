@@ -13,7 +13,7 @@ String mainMenu() {
 
 String listHeroesMenu() {
   v02_helpers.clearTerminal();
-  print("1. Tillbaka");
+  print("0. Tillbaka");
   stdout.write("Välj alternativ: ");
   String input = stdin.readLineSync() ?? "";
   if (input.isNotEmpty) v02_helpers.clearTerminal();
