@@ -33,6 +33,13 @@ Future<MenuOptions> listHeroesMenu() async {
     v02_helpers.clearTerminal();
     print("0. Tillbaka");
     final heroes = await v02_helpers.readHeroesFromJson();
+
+    heroes.sort((a, b) {
+      final aStrength = ((a['attributes'] ?? {})['strength'] ?? 0) as int;
+      final bStrength = ((b['attributes'] ?? {})['strength'] ?? 0) as int;
+      return bStrength.compareTo(aStrength);
+    });
+    
     print("=== Lista över hjältar ===");
     if (heroes.isEmpty) {
       print("Inga hjältar hittades!");
@@ -119,7 +126,7 @@ Future<MenuOptions> searchHeroMenu() async {
       final name = (hero['name'] ?? '').toString().toLowerCase();
       return name == query;
     }).toList();
-
+    
     if (matches.isEmpty) {
       stdout.writeln("Ingen hjälte hittades");
     }
