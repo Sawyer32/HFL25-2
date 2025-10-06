@@ -11,25 +11,24 @@ void main(List<String> arguments) {
 
 void gameHandler() {
   bool isRunning = true;
-  String input = "0";
+  String currentMenu = "main";
   v02_helpers.clearTerminal();
 
   while(isRunning) {
-    switch(input) {
-      case "0":
-        input = v02_menu.mainMenu();
+    switch(currentMenu) {
+      case "main":
+        v02_helpers.clearTerminal();
+        currentMenu = v02_menu.mainMenu();
         break;
-      case "1":
-        input = v02_menu.createHeroMenu();
+      case "create":
+        currentMenu = v02_menu.createHeroMenu();
         break;
-      case "2":
-        input = v02_menu.listHeroesMenu();
+      case "list":
+        currentMenu = v02_menu.listHeroesMenu();
         break;
-      case "3":
-        exit(0);
-      default:
-        print("Ogiltigt val");
-        input = v02_helpers.selectOption();
+      case "exit":
+        isRunning = false;
+        break;
     }
   }
 }
