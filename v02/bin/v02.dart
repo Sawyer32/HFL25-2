@@ -19,6 +19,9 @@ void gameHandler() {
       case "0":
         input = v02_menu.mainMenu();
         break;
+      case "1":
+        input = v02_menu.createHeroMenu();
+        break;
       case "2":
         input = v02_menu.listHeroesMenu();
         break;
@@ -26,8 +29,7 @@ void gameHandler() {
         exit(0);
       default:
         print("Ogiltigt val");
-        stdout.write("Välj alternativ: ");
-        input = stdin.readLineSync() ?? "";
+        input = v02_helpers.selectOption();
     }
   }
 }

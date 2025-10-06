@@ -6,16 +6,21 @@ String mainMenu() {
   print("1. Skapa hjälte");
   print("2. Visa alla hjältar");
   print("3. Avsluta");
-  stdout.write("Välj alternativ: ");
-  String input = stdin.readLineSync() ?? "";
+  String input = v02_helpers.selectOption();
   return input;
 }
 
 String listHeroesMenu() {
   v02_helpers.clearTerminal();
   print("0. Tillbaka");
-  stdout.write("Välj alternativ: ");
-  String input = stdin.readLineSync() ?? "";
+  String input = v02_helpers.selectOption();
   if (input.isNotEmpty) v02_helpers.clearTerminal();
+  return input;
+}
+
+String createHeroMenu() {
+  v02_helpers.clearTerminal();
+  stdout.writeln("0. Tillbaka");
+  String input = v02_helpers.selectOption();
   return input;
 }

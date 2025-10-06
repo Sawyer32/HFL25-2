@@ -7,3 +7,14 @@ void clearTerminal() {
     print(Process.runSync("clear", [], runInShell: true).stdout);
   }
 }
+
+String selectOption() {
+  stdout.write("Välj alternativ: ");
+  String input = stdin.readLineSync() ?? "";
+  if (input.isEmpty) {
+    stdout.writeln("Du måste göra ett val");
+    input = stdin.readLineSync() ?? "";
+  }
+  
+  return input;
+}
