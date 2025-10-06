@@ -1,21 +1,59 @@
 
 import 'dart:io';
 import 'package:v02/v02_helpers.dart' as v02_helpers;
+import 'package:v02/v02_models.dart';
 
-String mainMenu() {
+MenuOptions mainMenu() {
   print("1. Skapa hjälte");
   print("2. Visa alla hjältar");
   print("3. Avsluta");
-  stdout.write("Välj alternativ: ");
-  String input = stdin.readLineSync() ?? "";
-  return input;
+  final input = v02_helpers.selectOption();
+
+  switch (input) {
+    case "1":
+      v02_helpers.clearTerminal();
+      return MenuOptions.create;
+    case "2": 
+      v02_helpers.clearTerminal();
+      return MenuOptions.list;
+    case "3":
+      return MenuOptions.exit;
+    default: 
+      v02_helpers.clearTerminal();
+      print("Ogiltigt val");
+      return MenuOptions.main;
+  }
 }
 
-String listHeroesMenu() {
+MenuOptions listHeroesMenu() {
+  while (true) {
+    v02_helpers.clearTerminal();
+    print("0. Tillbaka");
+    final String input = v02_helpers.selectOption();
+
+    if (input == "0") return MenuOptions.main;
+
+    print("Ogiltigt val");
+  }
+}
+
+MenuOptions createHeroMenu() {
+    v02_helpers.clearTerminal();
+  while (true) {
+    stdout.writeln("0. Tillbaka");
+
+    final String input = v02_helpers.selectOption();
+    if (input == "0") return MenuOptions.main;
+    print("Ogiltigt val");
+  }
+}
+
+MenuOptions searchHeroMenu() {
   v02_helpers.clearTerminal();
-  print("1. Tillbaka");
-  stdout.write("Välj alternativ: ");
-  String input = stdin.readLineSync() ?? "";
-  if (input.isNotEmpty) v02_helpers.clearTerminal();
-  return input;
+  while (true) {
+    stdout.writeln("0. Tillbaka");
+    final String input = v02_helpers.selectOption();
+
+    if (input == 0) return MenuOptions.main;   
+  }
 }
