@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:v02/v02_helpers.dart' as v02_helpers;
 import 'package:v02/v02_models.dart';
@@ -25,12 +24,21 @@ MenuOptions mainMenu() {
   }
 }
 
-MenuOptions listHeroesMenu() {
+Future<MenuOptions> listHeroesMenu() async {
   while (true) {
     v02_helpers.clearTerminal();
     print("0. Tillbaka");
+    final heroes = await v02_helpers.readHeroesFromJson();
+    print("=== Lista över hjältar ===");
+    if (heroes.isEmpty) {
+      print("Inga hjältar hittades!");
+    }
+    for (var hero in heroes) {
+      final attributes = (hero['attributes'] ?? {}) as Map<String, dynamic>;
+      final type = (hero['type'] ?? {}) as Map<String, dynamic>;
+      stdout.writeln("Namn: ${hero['name']}, Level: ${hero['level']}, Styrka: ${attributes['strength']}, Stamina: ${attributes['stamina']}, Ras: ${type['race']}, Faktion: ${type['faction']}");
+    }
     final String input = v02_helpers.selectOption();
-
     if (input == "0") return MenuOptions.main;
 
     print("Ogiltigt val");
@@ -38,14 +46,53 @@ MenuOptions listHeroesMenu() {
 }
 
 MenuOptions createHeroMenu() {
-    v02_helpers.clearTerminal();
-  while (true) {
-    stdout.writeln("0. Tillbaka");
+  // v02_helpers.clearTerminal();
+  stdout.writeln("1. Ny hjälte");
+  stdout.writeln("2. Tillbaka");
+  final String input = v02_helpers.selectOption();
 
-    final String input = v02_helpers.selectOption();
-    if (input == "0") return MenuOptions.main;
-    print("Ogiltigt val");
+  switch (input) {
+    case "1":
+      v02_helpers.clearTerminal();
+      return MenuOptions.newHero;
+    case "2": 
+      v02_helpers.clearTerminal();
+      return MenuOptions.main;
+    case "3":
+      return MenuOptions.exit;
+    default: 
+      v02_helpers.clearTerminal();
+      print("Ogiltigt val");
+      return MenuOptions.create;
   }
+}
+
+Future<MenuOptions> createHero() async {
+  stdout.write("Namn: ");
+  String name = stdin.readLineSync() ?? "";
+  stdout.write("Level: ");
+  String level = stdin.readLineSync() ?? "";
+  stdout.write("Styrka: ");
+  String strength = stdin.readLineSync() ?? "";
+  stdout.write("Stamina: ");
+  String stamina = stdin.readLineSync() ?? "";
+  stdout.write("Ras (Människa, Alv, Orc): ");
+  String race = stdin.readLineSync() ?? "";
+  stdout.write("Faktion (God, ond): ");
+  String faction = stdin.readLineSync() ?? "";
+
+
+  final Hero hero = Hero(
+    name: name,
+    level: int.parse(level),
+    attributes: HeroAttributes(strength: int.parse(strength), stamina: int.parse(stamina)),
+    type: HeroType(race, faction)
+  );
+
+  await v02_helpers.saveHeroToFile(hero);
+
+  await Future.delayed(Duration(milliseconds: 400));
+  return MenuOptions.main;
 }
 
 MenuOptions searchHeroMenu() {

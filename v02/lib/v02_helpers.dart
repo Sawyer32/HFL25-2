@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:v02/v02_models.dart';
 
 void clearTerminal() {
   if (Platform.isWindows) {
@@ -12,4 +15,38 @@ String selectOption() {
   stdout.write("Välj alternativ: ");
   String input = stdin.readLineSync() ?? "";
   return input;
+}
+
+Future<void> saveHeroToFile(Hero hero) async {
+  final file = File('heroes.json');
+
+  List<dynamic> heroes = [];
+
+  if (await file.exists()) {
+    final content = await file.readAsString();
+
+    if (content.isNotEmpty) {
+      heroes = jsonDecode(content);
+    }
+  }
+  heroes.add(hero.toJson());
+
+  await file.writeAsString(const JsonEncoder.withIndent('  ').convert(heroes), encoding: utf8);
+  print("Hjälte sparad till heroes.json!");
+}
+
+Future<List<dynamic>> readHeroesFromJson() async {
+  final file = File('heroes.json');
+
+  if (!await file.exists()) {
+    return [];
+  }
+
+  final content = await file.readAsString();
+
+  if (content.trim().isEmpty) {
+    return [];
+  }
+
+  return jsonDecode(content);
 }

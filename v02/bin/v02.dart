@@ -10,7 +10,7 @@ void main(List<String> arguments) {
   gameHandler();
 }
 
-void gameHandler() {
+void gameHandler() async {
   bool isRunning = true;
   MenuOptions currentMenu = MenuOptions.main;
   v02_helpers.clearTerminal();
@@ -24,8 +24,10 @@ void gameHandler() {
       case MenuOptions.create:
         currentMenu = v02_menu.createHeroMenu();
         break;
+      case MenuOptions.newHero:
+        currentMenu = await v02_menu.createHero();
       case MenuOptions.list:
-        currentMenu = v02_menu.listHeroesMenu();
+        currentMenu = await v02_menu.listHeroesMenu();
         break;
       case MenuOptions.search:
         currentMenu = v02_menu.searchHeroMenu();
