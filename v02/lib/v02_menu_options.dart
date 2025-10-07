@@ -57,7 +57,6 @@ Future<MenuOptions> listHeroesMenu() async {
 }
 
 MenuOptions createHeroMenu() {
-  // v02_helpers.clearTerminal();
   stdout.writeln("1. Ny hjälte");
   stdout.writeln("2. Tillbaka");
   final String input = v02_helpers.selectOption();

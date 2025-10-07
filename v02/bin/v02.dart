@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:v02/v02.dart' as v02;
 import 'package:v02/v02_helpers.dart' as v02_helpers;
-import 'package:v02/v02_menuOptions.dart' as v02_menu;
+import 'package:v02/v02_menu_options.dart' as v02_menu;
 import 'package:v02/v02_models.dart';
 
 void main(List<String> arguments) {
