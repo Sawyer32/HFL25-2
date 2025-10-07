@@ -17,8 +17,8 @@ String selectOption() {
   return input;
 }
 
-Future<void> saveHeroToFile(Hero hero) async {
-  final file = File('heroes.json');
+Future<void> saveHeroToFile(Hero hero, {String filePath = 'heroes.json'}) async {
+  final file = File(filePath);
 
   List<dynamic> heroes = [];
 
@@ -32,7 +32,7 @@ Future<void> saveHeroToFile(Hero hero) async {
   heroes.add(hero.toJson());
 
   await file.writeAsString(const JsonEncoder.withIndent('  ').convert(heroes), encoding: utf8);
-  print("Hjälte sparad till heroes.json!");
+  print("Hjälte sparad till $filePath!");
 }
 
 Future<List<dynamic>> readHeroesFromJson() async {
