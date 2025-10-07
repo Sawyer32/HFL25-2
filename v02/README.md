@@ -11,9 +11,9 @@ Detta är vecka 2 av mitt Dart-projekt för kursen HFL25-2. Projektet är en kon
 1. Kör applikationen med kommandot `dart run bin/v02.dart`.
    Alternativt, `dart run` om du befinner dig i projektets rotmapp (v02).
 2. Välj ett alternativ från huvudmenyn:
-   - Lägg till hjälte
-   - Lista hjältar
-   - Sök hjälte
+   - Skapa hjälte
+   - Visa alla hjältar
+   - Sök hjältar
    - Avsluta
 3. Följ instruktionerna på skärmen för att interagera med applikationen.
 
