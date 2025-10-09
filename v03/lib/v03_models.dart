@@ -11,7 +11,7 @@ class Hero {
   final String name;
   final int level;
   final HeroType type;
-  final HeroAttributes attributes;
+  final HeroPowerStats attributes;
 
   Hero({required this.name, required this.level, required this.type, required this.attributes});
 
@@ -20,7 +20,7 @@ class Hero {
       name: json['name'],
       level: json['level'],
       type: HeroType.fromJson(json['type']),
-      attributes: HeroAttributes.fromJson(json['attributes'])
+      attributes: HeroPowerStats.fromJson(json['attributes'])
     );
   }
 
@@ -52,20 +52,35 @@ class HeroType {
   }
 }
 
-class HeroAttributes {
-  final int strength;
-  final int stamina;
+class HeroPowerStats {
+  final String intelligence;
+  final String strength;
+  final String speed;
+  final String durability;
+  final String power;
+  final String combat;
 
-  HeroAttributes({required this.strength, required this.stamina});
+  HeroPowerStats(this.intelligence, this.strength, this.speed, this.durability, this.power, this.combat);
 
-  factory HeroAttributes.fromJson(Map<String, dynamic> json) {
-    return HeroAttributes(strength: json['strength'], stamina: json['stamina']);
+  factory HeroPowerStats.fromJson(Map<String, dynamic> json) {
+    return HeroPowerStats(
+      json['intelligence'],
+      json['strength'],
+      json['speed'],
+      json['durability'],
+      json['power'],
+      json['combat']
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'intelligence': intelligence,
       'strength': strength,
-      'stamina': stamina
+      'speed': speed,
+      'durability': durability,
+      'power': power,
+      'combat': combat
     };
   }
 }

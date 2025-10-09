@@ -92,14 +92,14 @@ Future<MenuOptions> createHero() async {
   String faction = stdin.readLineSync() ?? "";
 
 
-  final Hero hero = Hero(
-    name: name,
-    level: int.parse(level),
-    attributes: HeroAttributes(strength: int.parse(strength), stamina: int.parse(stamina)),
-    type: HeroType(race, faction)
-  );
+  // final Hero hero = Hero(
+  //   name: name,
+  //   level: int.parse(level),
+  //   attributes: HeroPowerStats(strength: int.parse(strength), stamina: int.parse(stamina)),
+  //   type: HeroType(race, faction)
+  // );
 
-  await v02_helpers.saveHeroToFile(hero);
+  // await v02_helpers.saveHeroToFile(hero);
 
   await Future.delayed(Duration(milliseconds: 400));
   return MenuOptions.main;
