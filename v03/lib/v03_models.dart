@@ -103,3 +103,21 @@ class HeroConnection {
     };
   }
 }
+
+class HeroWork {
+  String occupation;
+  String base;
+
+  HeroWork(this.occupation, this.base);
+
+  factory HeroWork.fromJson(Map<String, dynamic> json) {
+    return HeroWork(json['occupation'], json['base']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'occupation': occupation,
+      'base': base
+    };
+  }
+}
