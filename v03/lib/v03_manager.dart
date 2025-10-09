@@ -7,6 +7,11 @@ abstract class HeroDataManaging {
 }
 
 class HeroDataManager implements HeroDataManaging {
+  HeroDataManager._();
+  static final HeroDataManager _instance = HeroDataManager._();
+  
+  factory HeroDataManager() => _instance;
+
   @override
   Future<void> getHeroList() {
     // TODO: implement getHeroList
