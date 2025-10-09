@@ -121,3 +121,29 @@ class HeroWork {
     };
   }
 }
+
+class HeroAppearance {
+  final String gender;
+  final String race;
+  final List<String> height;
+  final List<String> weight;
+  final String eyeColor;
+  final String hairColor;
+
+  HeroAppearance(this.gender, this.race, this.height, this.weight, this.eyeColor, this.hairColor);
+
+  factory HeroAppearance.fromJson(Map<String, dynamic> json) {
+    return HeroAppearance(json['gender'], json['race'], json['height'], json['weight'], json['eye-color'], json['hair-color']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'gender': gender,
+      'race': race,
+      'height': height,
+      'weight': weight,
+      'eye-color': eyeColor,
+      'hair-color': hairColor
+    };
+  }
+}
