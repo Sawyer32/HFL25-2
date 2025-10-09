@@ -1,11 +1,4 @@
-enum MenuOptions {
-  main,
-  create,
-  newHero,
-  list,
-  search,
-  exit
-}
+enum MenuOptions { main, create, newHero, list, search, exit }
 
 class HeroModel {
   final String response;
@@ -18,7 +11,17 @@ class HeroModel {
   final HeroConnection connections;
   final HeroImage image;
 
-  HeroModel({required this.response, required this.id, required this.name, required this.powerstats, required this.biography, required this.appearance, required this.work, required this.connections, required this.image});
+  HeroModel({
+    required this.response,
+    required this.id,
+    required this.name,
+    required this.powerstats,
+    required this.biography,
+    required this.appearance,
+    required this.work,
+    required this.connections,
+    required this.image,
+  });
 
   factory HeroModel.fromJson(Map<String, dynamic> json) {
     return HeroModel(
@@ -30,7 +33,7 @@ class HeroModel {
       appearance: HeroAppearance.fromJson(json['appearance']),
       work: HeroWork.fromJson(json['work']),
       connections: HeroConnection.fromJson(json['connections']),
-      image: json['image']
+      image: json['image'],
     );
   }
 
@@ -44,7 +47,7 @@ class HeroModel {
       'appearance': appearance,
       'work': work,
       'connections': connections,
-      'image': image
+      'image': image,
     };
   }
 }
@@ -57,7 +60,14 @@ class HeroPowerStats {
   final String power;
   final String combat;
 
-  HeroPowerStats(this.intelligence, this.strength, this.speed, this.durability, this.power, this.combat);
+  HeroPowerStats(
+    this.intelligence,
+    this.strength,
+    this.speed,
+    this.durability,
+    this.power,
+    this.combat,
+  );
 
   factory HeroPowerStats.fromJson(Map<String, dynamic> json) {
     return HeroPowerStats(
@@ -66,7 +76,7 @@ class HeroPowerStats {
       json['speed'],
       json['durability'],
       json['power'],
-      json['combat']
+      json['combat'],
     );
   }
 
@@ -77,7 +87,7 @@ class HeroPowerStats {
       'speed': speed,
       'durability': durability,
       'power': power,
-      'combat': combat
+      'combat': combat,
     };
   }
 }
@@ -92,15 +102,13 @@ class HeroImage {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'url': url,
-    };
+    return {'url': url};
   }
 }
 
 class HeroConnection {
   final String groupAffiliation;
-  final List<String> relative;
+  final String relative;
 
   HeroConnection(this.groupAffiliation, this.relative);
 
@@ -109,10 +117,7 @@ class HeroConnection {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'group-affiliation': groupAffiliation,
-      'relatives': relative
-    };
+    return {'group-affiliation': groupAffiliation, 'relatives': relative};
   }
 }
 
@@ -127,10 +132,7 @@ class HeroWork {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'occupation': occupation,
-      'base': base
-    };
+    return {'occupation': occupation, 'base': base};
   }
 }
 
@@ -142,10 +144,24 @@ class HeroAppearance {
   final String eyeColor;
   final String hairColor;
 
-  HeroAppearance(this.gender, this.race, this.height, this.weight, this.eyeColor, this.hairColor);
+  HeroAppearance(
+    this.gender,
+    this.race,
+    this.height,
+    this.weight,
+    this.eyeColor,
+    this.hairColor,
+  );
 
   factory HeroAppearance.fromJson(Map<String, dynamic> json) {
-    return HeroAppearance(json['gender'], json['race'], json['height'], json['weight'], json['eye-color'], json['hair-color']);
+    return HeroAppearance(
+      json['gender'],
+      json['race'],
+      json['height'],
+      json['weight'],
+      json['eye-color'],
+      json['hair-color'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -155,7 +171,7 @@ class HeroAppearance {
       'height': height,
       'weight': weight,
       'eye-color': eyeColor,
-      'hair-color': hairColor
+      'hair-color': hairColor,
     };
   }
 }
@@ -168,11 +184,27 @@ class HeroBiography {
   final String firstAppearance;
   final String publisher;
   final String alignment;
-  
-  HeroBiography(this.fullName, this.alterEgo, this.alias, this.placeOfBirth, this.firstAppearance, this.publisher, this.alignment);
+
+  HeroBiography(
+    this.fullName,
+    this.alterEgo,
+    this.alias,
+    this.placeOfBirth,
+    this.firstAppearance,
+    this.publisher,
+    this.alignment,
+  );
 
   factory HeroBiography.fromJson(Map<String, dynamic> json) {
-    return HeroBiography(json['fullName'], json['alterEgo'], json['alias'], json['placeOfBirth'], json['firstAppearance'], json['publisher'], json['alignment']);
+    return HeroBiography(
+      json['fullName'],
+      json['alterEgo'],
+      json['alias'],
+      json['placeOfBirth'],
+      json['firstAppearance'],
+      json['publisher'],
+      json['alignment'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -183,7 +215,7 @@ class HeroBiography {
       'place-of-birth': placeOfBirth,
       'first-appearance': firstAppearance,
       'publisher': publisher,
-      'alignment': alignment
+      'alignment': alignment,
     };
   }
 }
