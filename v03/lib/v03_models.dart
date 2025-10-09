@@ -69,3 +69,19 @@ class HeroAttributes {
     };
   }
 }
+
+class HeroImage {
+  final String url;
+
+  HeroImage(this.url);
+
+  factory HeroImage.fromJson(Map<String, dynamic> json) {
+    return HeroImage(json['url']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'url': url,
+    };
+  }
+}
