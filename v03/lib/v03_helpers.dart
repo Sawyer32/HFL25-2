@@ -17,7 +17,10 @@ String selectOption() {
   return input;
 }
 
-Future<void> saveHeroToFile(HeroModel hero, {String filePath = 'heroes.json'}) async {
+Future<void> saveHeroToFile(
+  HeroModel hero, {
+  String filePath = 'heroes.json',
+}) async {
   final file = File(filePath);
 
   List<dynamic> heroes = [];
@@ -31,7 +34,10 @@ Future<void> saveHeroToFile(HeroModel hero, {String filePath = 'heroes.json'}) a
   }
   heroes.add(hero.toJson());
 
-  await file.writeAsString(const JsonEncoder.withIndent('  ').convert(heroes), encoding: utf8);
+  await file.writeAsString(
+    const JsonEncoder.withIndent('  ').convert(heroes),
+    encoding: utf8,
+  );
   print("Hjälte sparad till $filePath!");
 }
 
