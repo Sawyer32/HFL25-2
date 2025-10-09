@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:v02/v03_helpers.dart';
-import 'package:v02/v03_models.dart';
+import 'package:v03/v03_helpers.dart';
+import 'package:v03/v03_models.dart';
 
 void main() {
   test('create hero', () async {
