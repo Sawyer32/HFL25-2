@@ -147,3 +147,31 @@ class HeroAppearance {
     };
   }
 }
+
+class HeroBiography {
+  final String fullName;
+  final List<String> alterEgo;
+  final List<String> alias;
+  final String placeOfBirth;
+  final String firstAppearance;
+  final String publisher;
+  final String alignment;
+  
+  HeroBiography(this.fullName, this.alterEgo, this.alias, this.placeOfBirth, this.firstAppearance, this.publisher, this.alignment);
+
+  factory HeroBiography.fromJson(Map<String, dynamic> json) {
+    return HeroBiography(json['fullName'], json['alterEgo'], json['alias'], json['placeOfBirth'], json['firstAppearance'], json['publisher'], json['alignment']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'full-name': fullName,
+      'alter-egos': alterEgo,
+      'aliases': alias,
+      'place-of-birth': placeOfBirth,
+      'first-appearance': firstAppearance,
+      'publisher': publisher,
+      'alignment': alignment
+    };
+  }
+}
