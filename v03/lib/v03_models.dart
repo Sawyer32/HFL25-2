@@ -85,3 +85,21 @@ class HeroImage {
     };
   }
 }
+
+class HeroConnection {
+  final String groupAffiliation;
+  final List<String> relative;
+
+  HeroConnection(this.groupAffiliation, this.relative);
+
+  factory HeroConnection.fromJson(Map<String, dynamic> json) {
+    return HeroConnection(json['group-affiliation'], json['relatives']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'group-affiliation': groupAffiliation,
+      'relatives': relative
+    };
+  }
+}
