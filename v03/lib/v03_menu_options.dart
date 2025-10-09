@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:v02/v03_helpers.dart' as v02_helpers;
-import 'package:v02/v03_models.dart';
+import 'package:v03/v03_helpers.dart' as v02_helpers;
+import 'package:v03/v03_models.dart';
 
 MenuOptions mainMenu() {
   print("1. Skapa hjälte");
