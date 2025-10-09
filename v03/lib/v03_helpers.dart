@@ -17,7 +17,7 @@ String selectOption() {
   return input;
 }
 
-Future<void> saveHeroToFile(Hero hero, {String filePath = 'heroes.json'}) async {
+Future<void> saveHeroToFile(HeroModel hero, {String filePath = 'heroes.json'}) async {
   final file = File(filePath);
 
   List<dynamic> heroes = [];

@@ -3,7 +3,7 @@ import 'package:v03/v03_models.dart';
 abstract class HeroDataManaging {
   Future<void> saveHero();
   Future<void> getHeroList();
-  Future<Hero> searchHero();
+  Future<HeroModel> searchHero();
 }
 
 class HeroDataManager implements HeroDataManaging {
@@ -20,7 +20,7 @@ class HeroDataManager implements HeroDataManaging {
   }
 
   @override
-  Future<Hero> searchHero() {
+  Future<HeroModel> searchHero() {
     // TODO: implement searchHero
     throw UnimplementedError();
   }

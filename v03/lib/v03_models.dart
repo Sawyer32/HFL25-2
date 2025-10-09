@@ -7,47 +7,44 @@ enum MenuOptions {
   exit
 }
 
-class Hero {
+class HeroModel {
+  final String response;
+  final String id;
   final String name;
-  final int level;
-  final HeroType type;
-  final HeroPowerStats attributes;
+  final HeroPowerStats powerstats;
+  final HeroBiography biography;
+  final HeroAppearance appearance;
+  final HeroWork work;
+  final HeroConnection connections;
+  final HeroImage image;
 
-  Hero({required this.name, required this.level, required this.type, required this.attributes});
+  HeroModel({required this.response, required this.id, required this.name, required this.powerstats, required this.biography, required this.appearance, required this.work, required this.connections, required this.image});
 
-  factory Hero.fromJson(Map<String, dynamic> json) {
-    return Hero(
+  factory HeroModel.fromJson(Map<String, dynamic> json) {
+    return HeroModel(
+      response: json['response'],
+      id: json['id'],
       name: json['name'],
-      level: json['level'],
-      type: HeroType.fromJson(json['type']),
-      attributes: HeroPowerStats.fromJson(json['attributes'])
+      powerstats: HeroPowerStats.fromJson(json['powerstats']),
+      biography: HeroBiography.fromJson(json['biography']),
+      appearance: HeroAppearance.fromJson(json['appearance']),
+      work: HeroWork.fromJson(json['work']),
+      connections: HeroConnection.fromJson(json['connections']),
+      image: json['image']
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'response': response,
+      'id': id,
       'name': name,
-      'level': level,
-      'attributes': attributes.toJson(),
-      'type': type.toJson()
-    };
-  }
-}
-
-class HeroType {
-  final String race;
-  final String faction;
-
-  HeroType(this.race, this.faction);
-
-  factory HeroType.fromJson(Map<String, dynamic> json) {
-    return HeroType(json['race'], json['faction']);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'race': race,
-      'faction': faction,
+      'powerstats': powerstats,
+      'biography': biography,
+      'appearance': appearance,
+      'work': work,
+      'connections': connections,
+      'image': image
     };
   }
 }
