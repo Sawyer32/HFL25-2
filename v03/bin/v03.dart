@@ -1,0 +1,37 @@
+import 'package:v02/v03_helpers.dart' as v02_helpers;
+import 'package:v02/v03_menu_options.dart' as v02_menu;
+import 'package:v02/v03_models.dart';
+
+void main(List<String> arguments) {
+  gameHandler();
+}
+
+void gameHandler() async {
+  bool isRunning = true;
+  MenuOptions currentMenu = MenuOptions.main;
+  v02_helpers.clearTerminal();
+
+  while(isRunning) {
+    switch(currentMenu) {
+      case MenuOptions.main:
+        v02_helpers.clearTerminal();
+        currentMenu = v02_menu.mainMenu();
+        break;
+      case MenuOptions.create:
+        currentMenu = v02_menu.createHeroMenu();
+        break;
+      case MenuOptions.newHero:
+        currentMenu = await v02_menu.createHero();
+      case MenuOptions.list:
+        currentMenu = await v02_menu.listHeroesMenu();
+        break;
+      case MenuOptions.search:
+        currentMenu = await v02_menu.searchHeroMenu();
+        break;
+      case MenuOptions.exit:
+        isRunning = false;
+        break;
+    }
+  }
+}
+
