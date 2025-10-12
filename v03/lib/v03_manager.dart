@@ -21,9 +21,21 @@ class HeroDataManager implements HeroDataManaging {
   factory HeroDataManager() => _instance;
 
   @override
-  Future<void> getHeroList() {
-    // TODO: implement getHeroList
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>> getHeroList() async {
+    final file = File('heroes.json');
+    if (!await file.exists()) {
+      return [];
+    }
+
+    final content = await file.readAsString();
+
+    if (content.trim().isEmpty) {
+      return [];
+    }
+
+    var result = List<Map<String, dynamic>>.from(jsonDecode(content));
+
+    return result;
   }
 
   @override
