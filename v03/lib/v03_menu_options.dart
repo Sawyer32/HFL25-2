@@ -37,8 +37,8 @@ Future<MenuOptions> listHeroesMenu() async {
     final heroes = await _manager.getHeroList();
 
     heroes.sort((a, b) {
-      final aStrength = num.parse((a['powerstats'] ?? {})['strength'] ?? 0);
-      final bStrength = num.parse((b['powerstats'] ?? {})['strength'] ?? 0);
+      final aStrength = a.powerstats.strength;
+      final bStrength = b.powerstats.strength;
       return bStrength.compareTo(aStrength);
     });
 
@@ -47,13 +47,33 @@ Future<MenuOptions> listHeroesMenu() async {
       print("Inga hjältar hittades!");
     }
     for (var hero in heroes) {
-      final powerstats = (hero['powerstats'] ?? {}) as Map<String, dynamic>;
-      final biography = (hero['biography'] ?? {}) as Map<String, dynamic>;
-      final appearance = (hero['appearance'] ?? {}) as Map<String, dynamic>;
-      final work = (hero['work'] ?? {}) as Map<String, dynamic>;
-      final connections = (hero['connections'] ?? {}) as Map<String, dynamic>;
       stdout.writeln(
-        "Name: ${hero['name']},\nIntellekt: ${powerstats['intelligence']}\nStyrka: ${powerstats['strength']},\nSnabbhet: ${powerstats['speed']},\nUthållighet: ${powerstats['durability']},\nKraft: ${powerstats['power']},\nStridsförmåga: ${powerstats['combat']},\nFullständigt namn: ${biography['full-name']},\nAlter egos: ${biography['alter-egos']},\nAlias: ${biography['aliases']},\nFödelseort: ${biography['place-of-birth']},\nFörsta framträdande: ${biography['first-appearance']},\nUtgivare: ${biography['publisher']},\nTillhörighet: ${biography['alignment']},\nKön: ${appearance['gender']},\nRas: ${appearance['race']},\nLängd: ${appearance['height']},\nVikt: ${appearance['weight']},\nÖgonfärg: ${appearance['eye-color']},\nHårfärg: ${appearance['hair-color']},\nArbete: ${work['occupation']},\nArbetsplats: ${work['base']},\nGrupp: ${connections['group-affiliation']},\nAnhöriga: ${connections['relatives']},\nBild: ${hero['image']['url']},\n================",
+        "Name: ${hero.name}\n"
+        "Intellekt: ${hero.powerstats.intelligence}\n"
+        "Styrka: ${hero.powerstats.strength}\n"
+        "Snabbhet: ${hero.powerstats.speed}\n"
+        "Uthållighet: ${hero.powerstats.durability}\n"
+        "Kraft: ${hero.powerstats.power}\n"
+        "Stridsförmåga: ${hero.powerstats.combat}\n"
+        "Fullständigt namn: ${hero.biography.fullName}\n"
+        "Alter egos: ${hero.biography.alterEgo}\n"
+        "Alias: ${hero.biography.alias}\n"
+        "Födelseort: ${hero.biography.placeOfBirth}\n"
+        "Första framträdande: ${hero.biography.firstAppearance}\n"
+        "Utgivare: ${hero.biography.publisher}\n"
+        "Tillhörighet: ${hero.biography.alignment}\n"
+        "Kön: ${hero.appearance.gender}\n"
+        "Ras: ${hero.appearance.race}\n"
+        "Längd: ${hero.appearance.height}\n"
+        "Vikt: ${hero.appearance.weight}\n"
+        "Ögonfärg: ${hero.appearance.eyeColor}\n"
+        "Hårfärg: ${hero.appearance.hairColor}\n"
+        "Arbete: ${hero.work.occupation}\n"
+        "Arbetsplats: ${hero.work.base}\n"
+        "Grupp: ${hero.connections.groupAffiliation}\n"
+        "Anhöriga: ${hero.connections.relative}\n"
+        "Bild: ${hero.image.url}\n"
+        "================"
       );
     }
     final String input = v02_helpers.selectOption();
@@ -86,8 +106,6 @@ MenuOptions createHeroMenu() {
 
 Future<MenuOptions> createHero() async {
   final manager.HeroDataManager _manager = manager.HeroDataManager();
-  stdout.write("Id: ");
-  String id = stdin.readLineSync() ?? "";
   stdout.write("Namn: ");
   String name = stdin.readLineSync() ?? "";
   stdout.write("Intellekt: ");
@@ -104,10 +122,12 @@ Future<MenuOptions> createHero() async {
   String combat = stdin.readLineSync() ?? "";
   stdout.write("Fullständigt namn: ");
   String fullName = stdin.readLineSync() ?? "";
-  stdout.write("Alter ego (Lämna tomt för default): ");
-  String alterEgo = stdin.readLineSync() ?? "Inget alter ego";
+  stdout.write("Alter ego (Separera med kommatecken): ");
+  String alterEgo = stdin.readLineSync() ?? "";
+  List<String> alterEgos = alterEgo.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
   stdout.write("Alias: ");
   String alias = stdin.readLineSync() ?? "";
+  List<String> aliases = alias.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
   stdout.write("Födelseort: ");
   String placeOfBirth = stdin.readLineSync() ?? "";
   stdout.write("Första framträdande: ");
@@ -139,27 +159,27 @@ Future<MenuOptions> createHero() async {
   stdout.write("Bild: ");
   String image = stdin.readLineSync() ?? "";
 
-  List<String> alterEgos = [];
-  alterEgos.add(alterEgo);
-  List<String> aliases = [];
-  aliases.add(alias);
-  List<String> heights = [];
+  Map<String, String> heights = {};
   if (height.isNotEmpty) {
     final double inches = int.parse(height) / 2.54;
-    heights.add(height);
-    heights.add(inches.toString());
+    heights = {
+      'cm': height,
+      'inches': inches.toStringAsFixed(1)
+    };
   }
-  List<String> weights = [];
+  Map<String, String> weights = {};
   if (weight.isNotEmpty) {
-    final double lbs = int.parse(height) * 2.2;
-    weights.add(weight);
-    weights.add(lbs.toString());
+    final double lbs = int.parse(weight) * 2.2;
+    weights = {
+      'kg': weight,
+      'lbs': lbs.toStringAsFixed(1),
+    };
   }
   
   
   final HeroModel hero = HeroModel(
     response: "success",
-    id: "1",
+    id: null,
     name: name,
     powerstats: HeroPowerStats(intelligence, strength, speed, durability, power, combat),
     biography: HeroBiography(fullName, alterEgos, aliases, placeOfBirth, firstAppearance, publisher, alignment),
@@ -170,8 +190,6 @@ Future<MenuOptions> createHero() async {
   );
 
   await _manager.saveHero(hero);
-
-  // await v02_helpers.saveHeroToFile(hero);
 
   await Future.delayed(Duration(milliseconds: 400));
   return MenuOptions.main;

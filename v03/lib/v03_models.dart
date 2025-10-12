@@ -2,7 +2,7 @@ enum MenuOptions { main, create, newHero, list, search, exit }
 
 class HeroModel {
   final String response;
-  final String id;
+  String? id;
   final String name;
   final HeroPowerStats powerstats;
   final HeroBiography biography;
@@ -113,7 +113,7 @@ class HeroConnection {
   HeroConnection(this.groupAffiliation, this.relative);
 
   factory HeroConnection.fromJson(Map<String, dynamic> json) {
-    return HeroConnection(json['group-affiliation'], json['relatives']);
+    return HeroConnection(json['group-affiliation'] ?? '', json['relatives'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -128,7 +128,7 @@ class HeroWork {
   HeroWork(this.occupation, this.base);
 
   factory HeroWork.fromJson(Map<String, dynamic> json) {
-    return HeroWork(json['occupation'], json['base']);
+    return HeroWork(json['occupation'] ?? '', json['base'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -139,8 +139,8 @@ class HeroWork {
 class HeroAppearance {
   final String gender;
   final String race;
-  final List<String> height;
-  final List<String> weight;
+  final Map<String, String> height;
+  final Map<String, String> weight;
   final String eyeColor;
   final String hairColor;
 
@@ -155,12 +155,12 @@ class HeroAppearance {
 
   factory HeroAppearance.fromJson(Map<String, dynamic> json) {
     return HeroAppearance(
-      json['gender'],
-      json['race'],
-      json['height'],
-      json['weight'],
-      json['eye-color'],
-      json['hair-color'],
+      json['gender'] ?? '',
+      json['race'] ?? '',
+      Map<String, String>.from(json['height'] ?? {}),
+      Map<String, String>.from(json['weight'] ?? {}),
+      json['eye-color'] ?? '',
+      json['hair-color'] ?? '',
     );
   }
 
@@ -197,13 +197,13 @@ class HeroBiography {
 
   factory HeroBiography.fromJson(Map<String, dynamic> json) {
     return HeroBiography(
-      json['fullName'],
-      json['alterEgo'],
-      json['alias'],
-      json['placeOfBirth'],
-      json['firstAppearance'],
-      json['publisher'],
-      json['alignment'],
+      json['fullName'] ?? '',
+      List<String>.from(json['alter-egos'] ?? []),
+      List<String>.from(json['alias'] ?? []),
+      json['placeOfBirth'] ?? '',
+      json['firstAppearance'] ?? '',
+      json['publisher'] ?? '',
+      json['alignment'] ?? '',
     );
   }
 
