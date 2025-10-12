@@ -77,34 +77,6 @@ MenuOptions createHeroMenu() {
   }
 }
 
-Future<MenuOptions> createHero() async {
-  stdout.write("Namn: ");
-  String name = stdin.readLineSync() ?? "";
-  stdout.write("Level: ");
-  String level = stdin.readLineSync() ?? "";
-  stdout.write("Styrka: ");
-  String strength = stdin.readLineSync() ?? "";
-  stdout.write("Stamina: ");
-  String stamina = stdin.readLineSync() ?? "";
-  stdout.write("Ras (Människa, Alv, Orc): ");
-  String race = stdin.readLineSync() ?? "";
-  stdout.write("Faktion (God, ond): ");
-  String faction = stdin.readLineSync() ?? "";
-
-
-  final Hero hero = Hero(
-    name: name,
-    level: int.parse(level),
-    attributes: HeroAttributes(strength: int.parse(strength), stamina: int.parse(stamina)),
-    type: HeroType(race, faction)
-  );
-
-  await v02_helpers.saveHeroToFile(hero);
-
-  await Future.delayed(Duration(milliseconds: 400));
-  return MenuOptions.main;
-}
-
 Future<MenuOptions> searchHeroMenu() async {
   v02_helpers.clearTerminal();
   while (true) {
