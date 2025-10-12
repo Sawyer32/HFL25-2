@@ -42,12 +42,12 @@ class HeroModel {
       'response': response,
       'id': id,
       'name': name,
-      'powerstats': powerstats.toJson(),
-      'biography': biography.toJson(),
-      'appearance': appearance.toJson(),
-      'work': work.toJson(),
-      'connections': connections.toJson(),
-      'image': image.toJson(),
+      'powerstats': powerstats,
+      'biography': biography,
+      'appearance': appearance,
+      'work': work,
+      'connections': connections,
+      'image': image,
     };
   }
 }
