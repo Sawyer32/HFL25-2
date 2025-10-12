@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:v03/v03_models.dart';
 
 abstract class HeroDataManaging {
-  List<Map<String, dynamic>> heroes = [];
   int idIncrement = 0;
   Future<void> saveHero(HeroModel hero);
   Future<void> getHeroList();
@@ -12,12 +11,11 @@ abstract class HeroDataManaging {
 }
 
 class HeroDataManager implements HeroDataManaging {
-  @override
-  List<Map<String, dynamic>> heroes;
+  List<Map<String, dynamic>> heroList = [];
   @override
   int idIncrement;
 
-  HeroDataManager._() : heroes = [], idIncrement = 0;
+  HeroDataManager._() : idIncrement = 0;
   static final HeroDataManager _instance = HeroDataManager._();
 
   factory HeroDataManager() => _instance;
@@ -36,13 +34,13 @@ class HeroDataManager implements HeroDataManaging {
       final content = await file.readAsString();
 
       if (content.isNotEmpty) {
-        heroes = jsonDecode(content);
+        heroList = List<Map<String, dynamic>>.from(jsonDecode(content));
       }
     }
-    heroes.add(hero.toJson());
+    heroList.add(hero.toJson());
 
     await file.writeAsString(
-      const JsonEncoder.withIndent('  ').convert(heroes),
+      const JsonEncoder.withIndent('  ').convert(heroList),
       encoding: utf8,
     );
     print("Hjälte sparad till heroes.json!");
