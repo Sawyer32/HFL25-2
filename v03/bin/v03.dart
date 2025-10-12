@@ -1,4 +1,5 @@
 import 'package:v03/v03_helpers.dart' as v02_helpers;
+import 'package:v03/v03_manager.dart';
 import 'package:v03/v03_menu_options.dart' as v02_menu;
 import 'package:v03/v03_models.dart';
 
@@ -7,6 +8,7 @@ void main(List<String> arguments) {
 }
 
 void gameHandler() async {
+  await HeroDataManager().initializeHeroes();
   bool isRunning = true;
   MenuOptions currentMenu = MenuOptions.main;
   v02_helpers.clearTerminal();

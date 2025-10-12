@@ -8,6 +8,7 @@ abstract class HeroDataManaging {
   Future<void> saveHero(HeroModel hero);
   Future<void> getHeroList();
   Future<HeroModel> searchHero();
+  Future<void> initializeHeroes();
 }
 
 class HeroDataManager implements HeroDataManaging {
@@ -24,18 +25,21 @@ class HeroDataManager implements HeroDataManaging {
   Future<List<Map<String, dynamic>>> getHeroList() async {
     final file = File('heroes.json');
     if (!await file.exists()) {
-      return [];
+      return heroList;
     }
 
-    final content = await file.readAsString();
+    if (heroList.isEmpty) {
+      final content = await file.readAsString();
 
-    if (content.trim().isEmpty) {
-      return [];
+      if (content.trim().isEmpty) {
+        return [];
+      }
+
+      var result = List<Map<String, dynamic>>.from(jsonDecode(content));
+      return result;
+    } else {
+      return heroList;
     }
-
-    var result = List<Map<String, dynamic>>.from(jsonDecode(content));
-
-    return result;
   }
 
   @override
@@ -62,5 +66,17 @@ class HeroDataManager implements HeroDataManaging {
   Future<HeroModel> searchHero() {
     // TODO: implement searchHero
     throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> initializeHeroes() async {
+    final file = File("heroes.json");
+    if (await file.exists()) {
+      final content = await file.readAsString();
+
+      if (content.isNotEmpty) {
+        heroList = List<Map<String, dynamic>>.from(jsonDecode(content));
+      }
+    }
   }
 }
