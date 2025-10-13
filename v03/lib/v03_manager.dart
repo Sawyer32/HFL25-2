@@ -7,7 +7,7 @@ import 'package:v03/v03_models.dart';
 abstract class HeroDataManaging {
   Future<void> saveHero(HeroModel hero);
   Future<List<HeroModel>> getHeroList();
-  Future<HeroModel> searchHero();
+  Future<HeroModel?> searchHero(String name);
   Future<void> initializeHeroes();
 }
 
@@ -34,9 +34,12 @@ class HeroDataManager implements HeroDataManaging {
   }
 
   @override
-  Future<HeroModel> searchHero() {
-    // TODO: implement searchHero
-    throw UnimplementedError();
+  Future<HeroModel?> searchHero(String name) async {
+    try {
+      return heroList.firstWhere((hero) => hero.name.toLowerCase() == name.toLowerCase());
+    } catch (e) {
+      return null;
+    }
   }
   
   @override

@@ -33,7 +33,7 @@ class HeroModel {
       appearance: HeroAppearance.fromJson(json['appearance']),
       work: HeroWork.fromJson(json['work']),
       connections: HeroConnection.fromJson(json['connections']),
-      image: json['image'],
+      image: HeroImage.fromJson(json['image']),
     );
   }
 

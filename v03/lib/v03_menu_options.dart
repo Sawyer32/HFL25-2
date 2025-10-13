@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:v03/v03_helpers.dart' as v02_helpers;
+import 'package:v03/v03_helpers.dart' as v03_helpers;
 import 'package:v03/v03_models.dart';
 import 'package:v03/v03_manager.dart' as manager;
 
@@ -8,22 +8,22 @@ MenuOptions mainMenu() {
   print("2. Visa alla hjältar");
   print("3. Sök hjältar");
   print("4. Avsluta");
-  final input = v02_helpers.selectOption();
+  final input = v03_helpers.selectOption();
 
   switch (input) {
     case "1":
-      v02_helpers.clearTerminal();
+      v03_helpers.clearTerminal();
       return MenuOptions.create;
     case "2":
-      v02_helpers.clearTerminal();
+      v03_helpers.clearTerminal();
       return MenuOptions.list;
     case "3":
-      v02_helpers.clearTerminal();
+      v03_helpers.clearTerminal();
       return MenuOptions.search;
     case "4":
       return MenuOptions.exit;
     default:
-      v02_helpers.clearTerminal();
+      v03_helpers.clearTerminal();
       print("Ogiltigt val");
       return MenuOptions.main;
   }
@@ -32,7 +32,7 @@ MenuOptions mainMenu() {
 Future<MenuOptions> listHeroesMenu() async {
   final manager.HeroDataManager _manager = manager.HeroDataManager();
   while (true) {
-    v02_helpers.clearTerminal();
+    v03_helpers.clearTerminal();
     print("0. Tillbaka");
     final heroes = await _manager.getHeroList();
 
@@ -76,7 +76,7 @@ Future<MenuOptions> listHeroesMenu() async {
         "================"
       );
     }
-    final String input = v02_helpers.selectOption();
+    final String input = v03_helpers.selectOption();
     if (input == "0") return MenuOptions.main;
 
     print("Ogiltigt val");
@@ -86,19 +86,19 @@ Future<MenuOptions> listHeroesMenu() async {
 MenuOptions createHeroMenu() {
   stdout.writeln("1. Ny hjälte");
   stdout.writeln("2. Tillbaka");
-  final String input = v02_helpers.selectOption();
+  final String input = v03_helpers.selectOption();
 
   switch (input) {
     case "1":
-      v02_helpers.clearTerminal();
+      v03_helpers.clearTerminal();
       return MenuOptions.newHero;
     case "2":
-      v02_helpers.clearTerminal();
+      v03_helpers.clearTerminal();
       return MenuOptions.main;
     case "3":
       return MenuOptions.exit;
     default:
-      v02_helpers.clearTerminal();
+      v03_helpers.clearTerminal();
       print("Ogiltigt val");
       return MenuOptions.create;
   }
@@ -196,40 +196,49 @@ Future<MenuOptions> createHero() async {
 }
 
 Future<MenuOptions> searchHeroMenu() async {
-  v02_helpers.clearTerminal();
+  final manager.HeroDataManager _manager = manager.HeroDataManager();
+  v03_helpers.clearTerminal();
   while (true) {
-    var heroes = await v02_helpers.readHeroesFromJson();
     stdout.writeln("=== Sök bland hjältarna ===");
-    if (heroes.isEmpty) {
-      stdout.writeln("Inga hjältar finns.");
-    }
     stdout.write("Sökord: ");
     final String searchParam = stdin.readLineSync() ?? "";
     if (searchParam == "0") {
       return MenuOptions.main;
     }
-
-    final query = searchParam.toLowerCase();
-
-    final matches = heroes.where((hero) {
-      final name = (hero['name'] ?? '').toString().toLowerCase();
-      return name == query;
-    }).toList();
-
-    if (matches.isEmpty) {
-      stdout.writeln("Ingen hjälte hittades");
-    }
-
-    for (var hero in matches) {
-      final attributes = (hero['attributes'] ?? {}) as Map<String, dynamic>;
-      final type = (hero['type'] ?? {}) as Map<String, dynamic>;
+    var hero = await _manager.searchHero(searchParam);
+    if (hero == null) {
+      stdout.writeln("Inga hjältar finns.");
+    } else {
       stdout.writeln(
-        "Namn: ${hero['name']}, Level: ${hero['level']}, Styrka: ${attributes['strength']}, Stamina: ${attributes['stamina']}, Ras: ${type['race']}, Faktion: ${type['faction']}",
+        "Name: ${hero.name}\n"
+        "Intellekt: ${hero.powerstats.intelligence}\n"
+        "Styrka: ${hero.powerstats.strength}\n"
+        "Snabbhet: ${hero.powerstats.speed}\n"
+        "Uthållighet: ${hero.powerstats.durability}\n"
+        "Kraft: ${hero.powerstats.power}\n"
+        "Stridsförmåga: ${hero.powerstats.combat}\n"
+        "Fullständigt namn: ${hero.biography.fullName}\n"
+        "Alter egos: ${hero.biography.alterEgo}\n"
+        "Alias: ${hero.biography.alias}\n"
+        "Födelseort: ${hero.biography.placeOfBirth}\n"
+        "Första framträdande: ${hero.biography.firstAppearance}\n"
+        "Utgivare: ${hero.biography.publisher}\n"
+        "Tillhörighet: ${hero.biography.alignment}\n"
+        "Kön: ${hero.appearance.gender}\n"
+        "Ras: ${hero.appearance.race}\n"
+        "Längd: ${hero.appearance.height}\n"
+        "Vikt: ${hero.appearance.weight}\n"
+        "Ögonfärg: ${hero.appearance.eyeColor}\n"
+        "Hårfärg: ${hero.appearance.hairColor}\n"
+        "Arbete: ${hero.work.occupation}\n"
+        "Arbetsplats: ${hero.work.base}\n"
+        "Grupp: ${hero.connections.groupAffiliation}\n"
+        "Anhöriga: ${hero.connections.relative}\n"
+        "Bild: ${hero.image.url}\n"
       );
     }
-
     stdout.writeln("Tryck Enter för att söka igen...");
     stdin.readLineSync();
-    v02_helpers.clearTerminal();
+    v03_helpers.clearTerminal();
   }
 }
