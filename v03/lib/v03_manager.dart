@@ -1,66 +1,74 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:uuid/uuid.dart';
 import 'package:v03/v03_models.dart';
 
 abstract class HeroDataManaging {
-  int idIncrement = 0;
   Future<void> saveHero(HeroModel hero);
-  Future<void> getHeroList();
-  Future<HeroModel> searchHero();
+  Future<List<HeroModel>> getHeroList();
+  Future<HeroModel?> searchHero(String name);
+  Future<void> initializeHeroes();
 }
 
 class HeroDataManager implements HeroDataManaging {
-  List<Map<String, dynamic>> heroList = [];
-  @override
-  int idIncrement;
-
-  HeroDataManager._() : idIncrement = 0;
+  List<HeroModel> heroList = [];
+  
+  HeroDataManager._();
   static final HeroDataManager _instance = HeroDataManager._();
 
   factory HeroDataManager() => _instance;
 
+  final _uuid = const Uuid();
+
   @override
-  Future<List<Map<String, dynamic>>> getHeroList() async {
-    final file = File('heroes.json');
-    if (!await file.exists()) {
-      return [];
-    }
-
-    final content = await file.readAsString();
-
-    if (content.trim().isEmpty) {
-      return [];
-    }
-
-    var result = List<Map<String, dynamic>>.from(jsonDecode(content));
-
-    return result;
+  Future<List<HeroModel>> getHeroList() async {
+    return heroList;
   }
 
   @override
   Future<void> saveHero(HeroModel hero) async {
-    final file = File("heroes.json");
-
-    if (await file.exists()) {
-      final content = await file.readAsString();
-
-      if (content.isNotEmpty) {
-        heroList = List<Map<String, dynamic>>.from(jsonDecode(content));
-      }
-    }
-    heroList.add(hero.toJson());
-
-    await file.writeAsString(
-      const JsonEncoder.withIndent('  ').convert(heroList),
-      encoding: utf8,
-    );
-    print("Hjälte sparad till heroes.json!");
+    hero.id ??= _uuid.v4();
+    heroList.add(hero);
+    await saveToJson();  
   }
 
   @override
-  Future<HeroModel> searchHero() {
-    // TODO: implement searchHero
-    throw UnimplementedError();
+  Future<HeroModel?> searchHero(String name) async {
+    try {
+      return heroList.firstWhere((hero) => hero.name.toLowerCase() == name.toLowerCase());
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  @override
+  Future<void> initializeHeroes() async {
+    final file = File("heroes.json");
+    try {
+      if (await file.exists()) {
+        final content = await file.readAsString();
+
+        if (content.isNotEmpty) {
+          final decoded = jsonDecode(content) as List<dynamic>;
+          heroList = decoded.map((e) => HeroModel.fromJson(e)).toList();
+        }
+      }
+    } catch (e) {
+      print("Kunde inte läsa in heroes.json: $e");
+      heroList = [];
+    }
+  }
+
+  Future<void> saveToJson() async {
+    final file = File("heroes.json");
+    final jsonHeroList = heroList.map((h) => h.toJson()).toList();
+
+    await file.writeAsString(
+      const JsonEncoder.withIndent('  ').convert(jsonHeroList),
+      encoding: utf8,
+    );
+
+    print("Hjälte sparad till heroes.json!");
   }
 }
