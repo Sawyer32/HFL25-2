@@ -10,19 +10,35 @@ class MockHeroDataManager implements HeroDataManaging {
   }
 
   @override
-  Future<void> initializeHeroes() {
+  Future<void> initializeHeroes() async {
     final hero = HeroModel(
-      response: "200", 
-      id: "1", 
-      name: "Mock", 
-      powerstats: HeroPowerStats("10", "20", "100", "90", "300", "123"), 
-      biography: HeroBiography("Mock Hero", ["Ego1", "Ego2"], ["Alias1", "Alias2"], "Mock town", "Mock vol 1", "Mock & Co", "Good"), 
-      appearance: HeroAppearance("Male", "Human", {}, weight, eyeColor, hairColor), 
-      work: work, 
-      connections: 
-      connections, 
-      image: image
+      response: "200",
+      id: "1",
+      name: "Mock",
+      powerstats: HeroPowerStats("10", "20", "100", "90", "300", "123"),
+      biography: HeroBiography(
+        "Mock Hero",
+        ["Ego1", "Ego2"],
+        ["Alias1", "Alias2"],
+        "Mock town",
+        "Mock vol 1",
+        "Mock & Co",
+        "Good",
+      ),
+      appearance: HeroAppearance(
+        "Male",
+        "Human",
+        {'cm': "173", "inches": "5'7"},
+        {'kg': "75", "lbs": "93"},
+        "Black",
+        "Black",
+      ),
+      work: HeroWork("Unemployed", "Basement"),
+      connections: HeroConnection("No affiliation", "None"),
+      image: HeroImage("image url"),
     );
+    
+    heroes.add(hero);
   }
 
   @override
@@ -36,5 +52,4 @@ class MockHeroDataManager implements HeroDataManaging {
     // TODO: implement searchHero
     throw UnimplementedError();
   }
-
 }
