@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:uuid/uuid.dart';
 import 'package:v03/v03_manager.dart';
 import 'package:v03/v03_models.dart';
 
 class MockHeroDataManager implements HeroDataManaging {
   List<HeroModel> heroes = [];
+  final _uuid = const Uuid();
 
   @override
   Future<List<HeroModel>> getHeroList() async {
@@ -11,7 +16,7 @@ class MockHeroDataManager implements HeroDataManaging {
 
   @override
   Future<void> initializeHeroes() async {
-    final hero = HeroModel(
+    final HeroModel hero = HeroModel(
       response: "200",
       id: "1",
       name: "Mock",
@@ -42,14 +47,17 @@ class MockHeroDataManager implements HeroDataManaging {
   }
 
   @override
-  Future<void> saveHero(HeroModel hero) {
-    // TODO: implement saveHero
-    throw UnimplementedError();
+  Future<void> saveHero(HeroModel hero) async {
+    hero.id ??= _uuid.v4();
+    heroes.add(hero);
   }
 
   @override
-  Future<HeroModel?> searchHero(String name) {
-    // TODO: implement searchHero
-    throw UnimplementedError();
+  Future<HeroModel?> searchHero(String name) async {
+    try {
+      return heroes.firstWhere((hero) => hero.name.toLowerCase() == name.toLowerCase());
+    } catch (e) {
+      return null;
+    }
   }
 }
