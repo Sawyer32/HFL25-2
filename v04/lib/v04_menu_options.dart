@@ -1,29 +1,29 @@
 import 'dart:io';
-import 'package:v03/v04_helpers.dart' as v03_helpers;
-import 'package:v03/v04_models.dart';
-import 'package:v03/v04_manager.dart' as manager;
+import 'package:v04/v04_helpers.dart' as v04_helpers;
+import 'package:v04/v04_models.dart';
+import 'package:v04/v04_manager.dart' as manager;
 
 MenuOptions mainMenu() {
   print("1. Skapa hjälte");
   print("2. Visa alla hjältar");
   print("3. Sök hjältar");
   print("4. Avsluta");
-  final input = v03_helpers.selectOption();
+  final input = v04_helpers.selectOption();
 
   switch (input) {
     case "1":
-      v03_helpers.clearTerminal();
+      v04_helpers.clearTerminal();
       return MenuOptions.create;
     case "2":
-      v03_helpers.clearTerminal();
+      v04_helpers.clearTerminal();
       return MenuOptions.list;
     case "3":
-      v03_helpers.clearTerminal();
+      v04_helpers.clearTerminal();
       return MenuOptions.search;
     case "4":
       return MenuOptions.exit;
     default:
-      v03_helpers.clearTerminal();
+      v04_helpers.clearTerminal();
       print("Ogiltigt val");
       return MenuOptions.main;
   }
@@ -32,7 +32,7 @@ MenuOptions mainMenu() {
 Future<MenuOptions> listHeroesMenu() async {
   final manager.HeroDataManager _manager = manager.HeroDataManager();
   while (true) {
-    v03_helpers.clearTerminal();
+    v04_helpers.clearTerminal();
     print("0. Tillbaka");
     final heroes = await _manager.getHeroList();
 
@@ -76,7 +76,7 @@ Future<MenuOptions> listHeroesMenu() async {
         "================"
       );
     }
-    final String input = v03_helpers.selectOption();
+    final String input = v04_helpers.selectOption();
     if (input == "0") return MenuOptions.main;
 
     print("Ogiltigt val");
@@ -86,19 +86,19 @@ Future<MenuOptions> listHeroesMenu() async {
 MenuOptions createHeroMenu() {
   stdout.writeln("1. Ny hjälte");
   stdout.writeln("2. Tillbaka");
-  final String input = v03_helpers.selectOption();
+  final String input = v04_helpers.selectOption();
 
   switch (input) {
     case "1":
-      v03_helpers.clearTerminal();
+      v04_helpers.clearTerminal();
       return MenuOptions.newHero;
     case "2":
-      v03_helpers.clearTerminal();
+      v04_helpers.clearTerminal();
       return MenuOptions.main;
     case "3":
       return MenuOptions.exit;
     default:
-      v03_helpers.clearTerminal();
+      v04_helpers.clearTerminal();
       print("Ogiltigt val");
       return MenuOptions.create;
   }
@@ -197,7 +197,7 @@ Future<MenuOptions> createHero() async {
 
 Future<MenuOptions> searchHeroMenu() async {
   final manager.HeroDataManager _manager = manager.HeroDataManager();
-  v03_helpers.clearTerminal();
+  v04_helpers.clearTerminal();
   while (true) {
     stdout.writeln("=== Sök bland hjältarna ===");
     stdout.write("Sökord: ");
@@ -239,6 +239,6 @@ Future<MenuOptions> searchHeroMenu() async {
     }
     stdout.writeln("Tryck Enter för att söka igen...");
     stdin.readLineSync();
-    v03_helpers.clearTerminal();
+    v04_helpers.clearTerminal();
   }
 }
