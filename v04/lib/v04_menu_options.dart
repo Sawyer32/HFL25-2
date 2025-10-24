@@ -7,7 +7,8 @@ MenuOptions mainMenu() {
   print("1. Skapa hjälte");
   print("2. Visa alla hjältar");
   print("3. Sök hjältar");
-  print("4. Avsluta");
+  print("4. Sök hjälte via api");
+  print("5. Avsluta");
   final input = v04_helpers.selectOption();
 
   switch (input) {
@@ -21,6 +22,9 @@ MenuOptions mainMenu() {
       v04_helpers.clearTerminal();
       return MenuOptions.search;
     case "4":
+      v04_helpers.clearTerminal();
+      return MenuOptions.searchApi;
+    case "5":
       return MenuOptions.exit;
     default:
       v04_helpers.clearTerminal();
@@ -240,5 +244,17 @@ Future<MenuOptions> searchHeroMenu() async {
     stdout.writeln("Tryck Enter för att söka igen...");
     stdin.readLineSync();
     v04_helpers.clearTerminal();
+  }
+}
+
+Future<MenuOptions> searchHeroApi() async {
+  v04_helpers.clearTerminal();
+  while (true) {
+    stdout.writeln("=== Sök bland hjältarna ===");
+    stdout.write("Sökord: ");
+    final String searchParam = stdin.readLineSync() ?? "";
+    if (searchParam == "0") {
+      return MenuOptions.main;
+    }
   }
 }
