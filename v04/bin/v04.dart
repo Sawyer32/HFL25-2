@@ -31,6 +31,9 @@ void gameHandler() async {
       case MenuOptions.search:
         currentMenu = await v04_menu.searchHeroMenu();
         break;
+      case MenuOptions.searchApi:
+        currentMenu = await v04_menu.searchHeroApi();
+        break;
       case MenuOptions.exit:
         isRunning = false;
         break;

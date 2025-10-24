@@ -1,4 +1,4 @@
-enum MenuOptions { main, create, newHero, list, search, exit }
+enum MenuOptions { main, create, newHero, list, search, searchApi, exit }
 
 class HeroModel {
   final String response;
