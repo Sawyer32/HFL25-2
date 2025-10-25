@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:uuid/uuid.dart';
 import 'package:v04/v04_models.dart';
+import 'package:dotenv/dotenv.dart';
+import 'package:http/http.dart' as http;
 
 abstract class HeroDataManaging {
   Future<void> saveHero(HeroModel hero);
@@ -35,9 +37,41 @@ class HeroDataManager implements HeroDataManaging {
 
   @override
   Future<HeroModel?> searchHero(String name) async {
-    try {
+    final DotEnv env = DotEnv(includePlatformEnvironment: true)..load();
+    final apiKey = env['API_KEY'];
+    final bool existingHero = heroList.any((hero) => hero.name.toLowerCase() == name.toLowerCase());
+
+    if (existingHero) {
       return heroList.firstWhere((hero) => hero.name.toLowerCase() == name.toLowerCase());
+    }
+
+    try {
+        final url = Uri.https('superheroapi.com', '/api/$apiKey/search/$name');
+        final response = await http.get(url);
+
+        if (response.statusCode != 200) {
+          stdout.writeln('HTTP error: ${response.statusCode}');
+          return null;
+        }
+
+        final data = jsonDecode(response.body);
+
+        if (data['response'] == 'error' || data['results'] == null) {
+          stdout.writeln('Ingen hjälte hittad vid namn "$name"');
+          return null;
+        }
+
+        final results = data['results'] as List;
+
+        final newHeroes = results.map((e) => HeroModel.fromJson(e)).toList();
+        heroList.addAll(newHeroes);
+      
+        final found = newHeroes.firstWhere((hero) => hero.name.toLowerCase() == name.toLowerCase());
+        
+        return found;
+      
     } catch (e) {
+      stdout.writeln('Misslyckades att hämta hjälte: $e');
       return null;
     }
   }
@@ -51,6 +85,7 @@ class HeroDataManager implements HeroDataManaging {
 
         if (content.isNotEmpty) {
           final decoded = jsonDecode(content) as List<dynamic>;
+          print('Decoded content: $decoded');
           heroList = decoded.map((e) => HeroModel.fromJson(e)).toList();
         }
       }

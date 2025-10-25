@@ -41,9 +41,9 @@ Future<MenuOptions> listHeroesMenu() async {
     final heroes = await _manager.getHeroList();
 
     heroes.sort((a, b) {
-      final aStrength = a.powerstats.strength;
-      final bStrength = b.powerstats.strength;
-      return bStrength.compareTo(aStrength);
+      final aStrength = a.powerstats?.strength;
+      final bStrength = b.powerstats?.strength;
+      return bStrength!.compareTo(aStrength!);
     });
 
     print("=== Lista över hjältar ===");
@@ -53,30 +53,30 @@ Future<MenuOptions> listHeroesMenu() async {
     for (var hero in heroes) {
       stdout.writeln(
         "Name: ${hero.name}\n"
-        "Intellekt: ${hero.powerstats.intelligence}\n"
-        "Styrka: ${hero.powerstats.strength}\n"
-        "Snabbhet: ${hero.powerstats.speed}\n"
-        "Uthållighet: ${hero.powerstats.durability}\n"
-        "Kraft: ${hero.powerstats.power}\n"
-        "Stridsförmåga: ${hero.powerstats.combat}\n"
-        "Fullständigt namn: ${hero.biography.fullName}\n"
-        "Alter egos: ${hero.biography.alterEgo}\n"
-        "Alias: ${hero.biography.alias}\n"
-        "Födelseort: ${hero.biography.placeOfBirth}\n"
-        "Första framträdande: ${hero.biography.firstAppearance}\n"
-        "Utgivare: ${hero.biography.publisher}\n"
-        "Tillhörighet: ${hero.biography.alignment}\n"
-        "Kön: ${hero.appearance.gender}\n"
-        "Ras: ${hero.appearance.race}\n"
-        "Längd: ${hero.appearance.height}\n"
-        "Vikt: ${hero.appearance.weight}\n"
-        "Ögonfärg: ${hero.appearance.eyeColor}\n"
-        "Hårfärg: ${hero.appearance.hairColor}\n"
-        "Arbete: ${hero.work.occupation}\n"
-        "Arbetsplats: ${hero.work.base}\n"
-        "Grupp: ${hero.connections.groupAffiliation}\n"
-        "Anhöriga: ${hero.connections.relative}\n"
-        "Bild: ${hero.image.url}\n"
+        "Intellekt: ${hero.powerstats?.intelligence}\n"
+        "Styrka: ${hero.powerstats?.strength}\n"
+        "Snabbhet: ${hero.powerstats?.speed}\n"
+        "Uthållighet: ${hero.powerstats?.durability}\n"
+        "Kraft: ${hero.powerstats?.power}\n"
+        "Stridsförmåga: ${hero.powerstats?.combat}\n"
+        "Fullständigt namn: ${hero.biography?.fullName}\n"
+        "Alter egos: ${hero.biography?.alterEgo}\n"
+        "Alias: ${hero.biography?.alias}\n"
+        "Födelseort: ${hero.biography?.placeOfBirth}\n"
+        "Första framträdande: ${hero.biography?.firstAppearance}\n"
+        "Utgivare: ${hero.biography?.publisher}\n"
+        "Tillhörighet: ${hero.biography?.alignment}\n"
+        "Kön: ${hero.appearance?.gender}\n"
+        "Ras: ${hero.appearance?.race}\n"
+        "Längd: ${hero.appearance?.height}\n"
+        "Vikt: ${hero.appearance?.weight}\n"
+        "Ögonfärg: ${hero.appearance?.eyeColor}\n"
+        "Hårfärg: ${hero.appearance?.hairColor}\n"
+        "Arbete: ${hero.work?.occupation}\n"
+        "Arbetsplats: ${hero.work?.base}\n"
+        "Grupp: ${hero.connections?.groupAffiliation}\n"
+        "Anhöriga: ${hero.connections?.relative}\n"
+        "Bild: ${hero.image?.url}\n"
         "================"
       );
     }
@@ -163,21 +163,21 @@ Future<MenuOptions> createHero() async {
   stdout.write("Bild: ");
   String image = stdin.readLineSync() ?? "";
 
-  Map<String, String> heights = {};
+  List<String> heights = [];
   if (height.isNotEmpty) {
     final double inches = int.parse(height) / 2.54;
-    heights = {
-      'cm': height,
-      'inches': inches.toStringAsFixed(1)
-    };
+    heights = [
+      '$height cm',
+      '${inches.toStringAsFixed(1)} in'
+    ];
   }
-  Map<String, String> weights = {};
+  List<String> weights = [];
   if (weight.isNotEmpty) {
     final double lbs = int.parse(weight) * 2.2;
-    weights = {
-      'kg': weight,
-      'lbs': lbs.toStringAsFixed(1),
-    };
+    weights = [
+      '$weight kg',
+      '${lbs.toStringAsFixed(1)} lb'
+    ];
   }
   
   
@@ -187,7 +187,14 @@ Future<MenuOptions> createHero() async {
     name: name,
     powerstats: HeroPowerStats(intelligence, strength, speed, durability, power, combat),
     biography: HeroBiography(fullName, alterEgos, aliases, placeOfBirth, firstAppearance, publisher, alignment),
-    appearance: HeroAppearance(gender, race, heights, weights, eyeColor, hairColor),
+    appearance: HeroAppearance(
+      gender: gender,
+      race: race,
+      height: heights,
+      weight: weights,
+      eyeColor: eyeColor,
+      hairColor: hairColor,
+    ),
     connections: HeroConnection(groupAffiliation, relatives),
     work: HeroWork(work, base),
     image: HeroImage(image)
@@ -213,33 +220,33 @@ Future<MenuOptions> searchHeroMenu() async {
     if (hero == null) {
       stdout.writeln("Inga hjältar finns.");
     } else {
-      stdout.writeln(
-        "Name: ${hero.name}\n"
-        "Intellekt: ${hero.powerstats.intelligence}\n"
-        "Styrka: ${hero.powerstats.strength}\n"
-        "Snabbhet: ${hero.powerstats.speed}\n"
-        "Uthållighet: ${hero.powerstats.durability}\n"
-        "Kraft: ${hero.powerstats.power}\n"
-        "Stridsförmåga: ${hero.powerstats.combat}\n"
-        "Fullständigt namn: ${hero.biography.fullName}\n"
-        "Alter egos: ${hero.biography.alterEgo}\n"
-        "Alias: ${hero.biography.alias}\n"
-        "Födelseort: ${hero.biography.placeOfBirth}\n"
-        "Första framträdande: ${hero.biography.firstAppearance}\n"
-        "Utgivare: ${hero.biography.publisher}\n"
-        "Tillhörighet: ${hero.biography.alignment}\n"
-        "Kön: ${hero.appearance.gender}\n"
-        "Ras: ${hero.appearance.race}\n"
-        "Längd: ${hero.appearance.height}\n"
-        "Vikt: ${hero.appearance.weight}\n"
-        "Ögonfärg: ${hero.appearance.eyeColor}\n"
-        "Hårfärg: ${hero.appearance.hairColor}\n"
-        "Arbete: ${hero.work.occupation}\n"
-        "Arbetsplats: ${hero.work.base}\n"
-        "Grupp: ${hero.connections.groupAffiliation}\n"
-        "Anhöriga: ${hero.connections.relative}\n"
-        "Bild: ${hero.image.url}\n"
-      );
+      // stdout.writeln(
+      //   "Name: ${hero.name}\n"
+      //   "Intellekt: ${hero.powerstats.intelligence}\n"
+      //   "Styrka: ${hero.powerstats.strength}\n"
+      //   "Snabbhet: ${hero.powerstats.speed}\n"
+      //   "Uthållighet: ${hero.powerstats.durability}\n"
+      //   "Kraft: ${hero.powerstats.power}\n"
+      //   "Stridsförmåga: ${hero.powerstats.combat}\n"
+      //   "Fullständigt namn: ${hero.biography.fullName}\n"
+      //   "Alter egos: ${hero.biography.alterEgo}\n"
+      //   "Alias: ${hero.biography.alias}\n"
+      //   "Födelseort: ${hero.biography.placeOfBirth}\n"
+      //   "Första framträdande: ${hero.biography.firstAppearance}\n"
+      //   "Utgivare: ${hero.biography.publisher}\n"
+      //   "Tillhörighet: ${hero.biography.alignment}\n"
+      //   "Kön: ${hero.appearance.gender}\n"
+      //   "Ras: ${hero.appearance.race}\n"
+      //   "Längd: ${hero.appearance.height}\n"
+      //   "Vikt: ${hero.appearance.weight}\n"
+      //   "Ögonfärg: ${hero.appearance.eyeColor}\n"
+      //   "Hårfärg: ${hero.appearance.hairColor}\n"
+      //   "Arbete: ${hero.work.occupation}\n"
+      //   "Arbetsplats: ${hero.work.base}\n"
+      //   "Grupp: ${hero.connections.groupAffiliation}\n"
+      //   "Anhöriga: ${hero.connections.relative}\n"
+      //   "Bild: ${hero.image.url}\n"
+      // );
     }
     stdout.writeln("Tryck Enter för att söka igen...");
     stdin.readLineSync();
@@ -248,6 +255,7 @@ Future<MenuOptions> searchHeroMenu() async {
 }
 
 Future<MenuOptions> searchHeroApi() async {
+  final _manager = manager.HeroDataManager();
   v04_helpers.clearTerminal();
   while (true) {
     stdout.writeln("=== Sök bland hjältarna ===");
@@ -256,5 +264,40 @@ Future<MenuOptions> searchHeroApi() async {
     if (searchParam == "0") {
       return MenuOptions.main;
     }
+
+    final hero = await _manager.searchHero(searchParam);
+    if (hero != null) {
+      stdout.writeln(
+        "Name: ${hero.name}\n"
+        "Intellekt: ${hero.powerstats?.intelligence}\n"
+        "Styrka: ${hero.powerstats?.strength}\n"
+        "Snabbhet: ${hero.powerstats?.speed}\n"
+        "Uthållighet: ${hero.powerstats?.durability}\n"
+        "Kraft: ${hero.powerstats?.power}\n"
+        "Stridsförmåga: ${hero.powerstats?.combat}\n"
+        "Fullständigt namn: ${hero.biography?.fullName}\n"
+        "Alter egos: ${hero.biography?.alterEgo}\n"
+        "Alias: ${hero.biography?.alias}\n"
+        "Födelseort: ${hero.biography?.placeOfBirth}\n"
+        "Första framträdande: ${hero.biography?.firstAppearance}\n"
+        "Utgivare: ${hero.biography?.publisher}\n"
+        "Tillhörighet: ${hero.biography?.alignment}\n"
+        "Kön: ${hero.appearance?.gender}\n"
+        "Ras: ${hero.appearance?.race}\n"
+        "Längd: ${hero.appearance?.height}\n"
+        "Vikt: ${hero.appearance?.weight}\n"
+        "Ögonfärg: ${hero.appearance?.eyeColor}\n"
+        "Hårfärg: ${hero.appearance?.hairColor}\n"
+        "Arbete: ${hero.work?.occupation}\n"
+        "Arbetsplats: ${hero.work?.base}\n"
+        "Grupp: ${hero.connections?.groupAffiliation}\n"
+        "Anhöriga: ${hero.connections?.relative}\n"
+        "Bild: ${hero.image?.url}\n"
+      );
+    }
+
+    stdout.writeln("Tryck Enter för att söka igen...");
+    stdin.readLineSync();
+    v04_helpers.clearTerminal();
   }
 }

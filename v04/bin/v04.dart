@@ -9,7 +9,8 @@ void main(List<String> arguments) {
 }
 
 void gameHandler() async {
-  await HeroDataManager().initializeHeroes();
+  final manager = HeroDataManager();
+  await manager.initializeHeroes();
   bool isRunning = true;
   MenuOptions currentMenu = MenuOptions.main;
   v04_helpers.clearTerminal();
