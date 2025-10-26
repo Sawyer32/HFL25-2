@@ -17,31 +17,23 @@ class MockHeroDataManager implements HeroDataManaging {
   @override
   Future<void> initializeHeroes() async {
     final HeroModel hero = HeroModel(
-      response: "200",
-      id: "1",
-      name: "Mock",
-      powerstats: HeroPowerStats("10", "20", "100", "90", "300", "123"),
-      biography: HeroBiography(
-        "Mock Hero",
-        ["Ego1", "Ego2"],
-        ["Alias1", "Alias2"],
-        "Mock town",
-        "Mock vol 1",
-        "Mock & Co",
-        "Good",
-      ),
-      appearance: HeroAppearance(
-        "Male",
-        "Human",
-        {'cm': "173", "inches": "5'7"},
-        {'kg': "75", "lbs": "93"},
-        "Black",
-        "Black",
-      ),
-      work: HeroWork("Unemployed", "Basement"),
-      connections: HeroConnection("No affiliation", "None"),
-      image: HeroImage("image url"),
-    );
+    response: "success",
+    id: null,
+    name: "MockHero",
+    powerstats: HeroPowerStats("10", "20", "100", "90", "300", "123"),
+    biography: HeroBiography("Full Name", ["Alter Ego"], ["Alias"], "Place of Birth", "First Appearance", "Publisher", "Good"),
+    appearance: HeroAppearance(
+      gender: "Male",
+      race: "Human",
+      height: ["180 cm", "5'11"],
+      weight: ["80 kg", "176 lbs"],
+      eyeColor: "Blue",
+      hairColor: "Brown",
+    ),
+    connections: HeroConnection("Group Affiliation", "Relatives"),
+    work: HeroWork("Occupation", "Base"),
+    image: HeroImage("Image URL")
+  );
     
     heroes.add(hero);
   }
