@@ -6,9 +6,8 @@ import 'package:v04/v04_manager.dart' as manager;
 MenuOptions mainMenu() {
   print("1. Skapa hjälte");
   print("2. Visa alla hjältar");
-  print("3. Sök hjältar");
-  print("4. Sök hjälte via api");
-  print("5. Avsluta");
+  print("3. Sök hjälte via api");
+  print("4. Avsluta");
   final input = v04_helpers.selectOption();
 
   switch (input) {
@@ -20,11 +19,8 @@ MenuOptions mainMenu() {
       return MenuOptions.list;
     case "3":
       v04_helpers.clearTerminal();
-      return MenuOptions.search;
-    case "4":
-      v04_helpers.clearTerminal();
       return MenuOptions.searchApi;
-    case "5":
+    case "4":
       return MenuOptions.exit;
     default:
       v04_helpers.clearTerminal();
@@ -204,54 +200,6 @@ Future<MenuOptions> createHero() async {
 
   await Future.delayed(Duration(milliseconds: 400));
   return MenuOptions.main;
-}
-
-Future<MenuOptions> searchHeroMenu() async {
-  final manager.HeroDataManager _manager = manager.HeroDataManager();
-  v04_helpers.clearTerminal();
-  while (true) {
-    stdout.writeln("=== Sök bland hjältarna ===");
-    stdout.write("Sökord: ");
-    final String searchParam = stdin.readLineSync() ?? "";
-    if (searchParam == "0") {
-      return MenuOptions.main;
-    }
-    var hero = await _manager.searchHero(searchParam);
-    if (hero == null) {
-      stdout.writeln("Inga hjältar finns.");
-    } else {
-      // stdout.writeln(
-      //   "Name: ${hero.name}\n"
-      //   "Intellekt: ${hero.powerstats.intelligence}\n"
-      //   "Styrka: ${hero.powerstats.strength}\n"
-      //   "Snabbhet: ${hero.powerstats.speed}\n"
-      //   "Uthållighet: ${hero.powerstats.durability}\n"
-      //   "Kraft: ${hero.powerstats.power}\n"
-      //   "Stridsförmåga: ${hero.powerstats.combat}\n"
-      //   "Fullständigt namn: ${hero.biography.fullName}\n"
-      //   "Alter egos: ${hero.biography.alterEgo}\n"
-      //   "Alias: ${hero.biography.alias}\n"
-      //   "Födelseort: ${hero.biography.placeOfBirth}\n"
-      //   "Första framträdande: ${hero.biography.firstAppearance}\n"
-      //   "Utgivare: ${hero.biography.publisher}\n"
-      //   "Tillhörighet: ${hero.biography.alignment}\n"
-      //   "Kön: ${hero.appearance.gender}\n"
-      //   "Ras: ${hero.appearance.race}\n"
-      //   "Längd: ${hero.appearance.height}\n"
-      //   "Vikt: ${hero.appearance.weight}\n"
-      //   "Ögonfärg: ${hero.appearance.eyeColor}\n"
-      //   "Hårfärg: ${hero.appearance.hairColor}\n"
-      //   "Arbete: ${hero.work.occupation}\n"
-      //   "Arbetsplats: ${hero.work.base}\n"
-      //   "Grupp: ${hero.connections.groupAffiliation}\n"
-      //   "Anhöriga: ${hero.connections.relative}\n"
-      //   "Bild: ${hero.image.url}\n"
-      // );
-    }
-    stdout.writeln("Tryck Enter för att söka igen...");
-    stdin.readLineSync();
-    v04_helpers.clearTerminal();
-  }
 }
 
 Future<MenuOptions> searchHeroApi() async {
