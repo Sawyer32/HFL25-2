@@ -9,7 +9,8 @@ void main(List<String> arguments) {
 }
 
 void gameHandler() async {
-  await HeroDataManager().initializeHeroes();
+  final manager = HeroDataManager();
+  await manager.initializeHeroes();
   bool isRunning = true;
   MenuOptions currentMenu = MenuOptions.main;
   v04_helpers.clearTerminal();
@@ -28,13 +29,11 @@ void gameHandler() async {
       case MenuOptions.list:
         currentMenu = await v04_menu.listHeroesMenu();
         break;
-      case MenuOptions.search:
-        currentMenu = await v04_menu.searchHeroMenu();
-        break;
       case MenuOptions.searchApi:
         currentMenu = await v04_menu.searchHeroApi();
         break;
       case MenuOptions.exit:
+        await manager.saveToJson();
         isRunning = false;
         break;
     }

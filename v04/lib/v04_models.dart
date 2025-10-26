@@ -1,39 +1,39 @@
-enum MenuOptions { main, create, newHero, list, search, searchApi, exit }
+enum MenuOptions { main, create, newHero, list, searchApi, exit }
 
 class HeroModel {
   final String response;
   String? id;
   final String name;
-  final HeroPowerStats powerstats;
-  final HeroBiography biography;
-  final HeroAppearance appearance;
-  final HeroWork work;
-  final HeroConnection connections;
-  final HeroImage image;
+  final HeroPowerStats? powerstats;
+  final HeroBiography? biography;
+  final HeroAppearance? appearance;
+  final HeroWork? work;
+  final HeroConnection? connections;
+  final HeroImage? image;
 
   HeroModel({
     required this.response,
     required this.id,
     required this.name,
-    required this.powerstats,
-    required this.biography,
-    required this.appearance,
-    required this.work,
-    required this.connections,
-    required this.image,
+    this.powerstats,
+    this.biography,
+    this.appearance,
+    this.work,
+    this.connections,
+    this.image,
   });
 
   factory HeroModel.fromJson(Map<String, dynamic> json) {
     return HeroModel(
-      response: json['response'],
-      id: json['id'],
-      name: json['name'],
-      powerstats: HeroPowerStats.fromJson(json['powerstats']),
-      biography: HeroBiography.fromJson(json['biography']),
-      appearance: HeroAppearance.fromJson(json['appearance']),
-      work: HeroWork.fromJson(json['work']),
-      connections: HeroConnection.fromJson(json['connections']),
-      image: HeroImage.fromJson(json['image']),
+      response: json['response'] ?? '',
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      powerstats: json['powerstats'] != null ? HeroPowerStats.fromJson(json['powerstats']) : null,
+      biography: json['biography'] != null ? HeroBiography.fromJson(json['biography']) : null,
+      appearance: json['appearance'] != null ? HeroAppearance.fromJson(json['appearance']) : null,
+      work: json['work'] != null ? HeroWork.fromJson(json['work']) : null,
+      connections: json['connections'] != null ? HeroConnection.fromJson(json['connections']) : null,
+      image: json['image'] != null ? HeroImage.fromJson(json['image']) : null,
     );
   }
 
@@ -42,12 +42,12 @@ class HeroModel {
       'response': response,
       'id': id,
       'name': name,
-      'powerstats': powerstats.toJson(),
-      'biography': biography.toJson(),
-      'appearance': appearance.toJson(),
-      'work': work.toJson(),
-      'connections': connections.toJson(),
-      'image': image,
+      'powerstats': powerstats?.toJson(),
+      'biography': biography?.toJson(),
+      'appearance': appearance?.toJson(),
+      'work': work?.toJson(),
+      'connections': connections?.toJson(),
+      'image': image ?? {},
     };
   }
 }
@@ -139,41 +139,49 @@ class HeroWork {
 class HeroAppearance {
   final String gender;
   final String race;
-  final Map<String, String> height;
-  final Map<String, String> weight;
+  final List<String> height;
+  final List<String> weight;
   final String eyeColor;
   final String hairColor;
 
-  HeroAppearance(
-    this.gender,
-    this.race,
-    this.height,
-    this.weight,
-    this.eyeColor,
-    this.hairColor,
-  );
+  HeroAppearance({
+    required this.gender,
+    required this.race,
+    required this.height,
+    required this.weight,
+    required this.eyeColor,
+    required this.hairColor,
+  });
 
   factory HeroAppearance.fromJson(Map<String, dynamic> json) {
+    List<String> heightList = [];
+    if (json['height'] is List) {
+      heightList = (json['height'] as List).map((item) => item.toString()).toList();
+    }
+
+    List<String> weightList = [];
+    if (json['weight'] is List) {
+      weightList = (json['weight'] as List).map((item) => item.toString()).toList();
+    }
+
     return HeroAppearance(
-      json['gender'] ?? '',
-      json['race'] ?? '',
-      Map<String, String>.from(json['height'] ?? {}),
-      Map<String, String>.from(json['weight'] ?? {}),
-      json['eye-color'] ?? '',
-      json['hair-color'] ?? '',
+      gender: json['gender'] ?? '',
+      race: json['race'] ?? '',
+      height: heightList,
+      weight: weightList,
+      eyeColor: json['eye-color'] ?? '',
+      hairColor: json['hair-color'] ?? '',
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'gender': gender,
-      'race': race,
-      'height': height,
-      'weight': weight,
-      'eye-color': eyeColor,
-      'hair-color': hairColor,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'gender': gender,
+        'race': race,
+        'height': height,
+        'weight': weight,
+        'eye-color': eyeColor,
+        'hair-color': hairColor,
+      };
 }
 
 class HeroBiography {
@@ -196,12 +204,30 @@ class HeroBiography {
   );
 
   factory HeroBiography.fromJson(Map<String, dynamic> json) {
+    List<String> alterEgos = [];
+    if (json['alter-egos'] != null) {
+      if (json['alter-egos'] is String) {
+        alterEgos = [(json['alter-egos'] as String)];
+      } else if (json['alter-egos'] is List) {
+        alterEgos = List<String>.from(json['alter-egos']);
+      }
+    }
+
+    List<String> aliases = [];
+    if (json['aliases'] != null) {
+      if (json['aliases'] is String) {
+        aliases = [(json['aliases'] as String)];
+      } else if (json['aliases'] is List) {
+        aliases = List<String>.from(json['aliases']);
+      }
+    }
+
     return HeroBiography(
-      json['fullName'] ?? '',
-      List<String>.from(json['alter-egos'] ?? []),
-      List<String>.from(json['alias'] ?? []),
-      json['placeOfBirth'] ?? '',
-      json['firstAppearance'] ?? '',
+      json['full-name'] ?? '',
+      alterEgos,
+      aliases,
+      json['place-of-birth'] ?? '',
+      json['first-appearance'] ?? '',
       json['publisher'] ?? '',
       json['alignment'] ?? '',
     );
