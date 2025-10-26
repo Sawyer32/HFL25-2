@@ -141,4 +141,9 @@ class HeroDataManager implements HeroDataManaging {
     return heroList.where((h) => h.biography?.alignment.toLowerCase() == 'bad').toList();
   }
 
+  Future<bool> removeHeroByName(String name) async {
+    final initialLength = heroList.length;
+    heroList.removeWhere((h) => h.name.toLowerCase() == name.toLowerCase());
+    return heroList.length < initialLength;
+  }
 }
