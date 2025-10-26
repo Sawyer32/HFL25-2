@@ -36,6 +36,7 @@ void gameHandler() async {
         currentMenu = await v04_menu.searchHeroApi();
         break;
       case MenuOptions.exit:
+        await manager.saveToJson();
         isRunning = false;
         break;
     }

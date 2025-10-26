@@ -37,39 +37,57 @@ class HeroDataManager implements HeroDataManaging {
 
   @override
   Future<HeroModel?> searchHero(String name) async {
+    final query = name.toLowerCase();
+    try {
+      return heroList.firstWhere((h) => h.name.toLowerCase() == query);
+    } catch (_) {}
+
     final DotEnv env = DotEnv(includePlatformEnvironment: true)..load();
     final apiKey = env['API_KEY'];
-    final bool existingHero = heroList.any((hero) => hero.name.toLowerCase() == name.toLowerCase());
-
-    if (existingHero) {
-      return heroList.firstWhere((hero) => hero.name.toLowerCase() == name.toLowerCase());
-    }
 
     try {
-        final url = Uri.https('superheroapi.com', '/api/$apiKey/search/$name');
-        final response = await http.get(url);
+      final url = Uri.https('superheroapi.com', '/api/$apiKey/search/$name');
+      final response = await http.get(url);
 
-        if (response.statusCode != 200) {
-          stdout.writeln('HTTP error: ${response.statusCode}');
-          return null;
+      if (response.statusCode != 200) {
+        stdout.writeln('HTTP error: ${response.statusCode}');
+        return null;
+      }
+
+      final data = jsonDecode(response.body);
+
+      if (data['response'] == 'error' || data['results'] == null) {
+        stdout.writeln('Ingen hjälte hittad vid namn "$name"');
+        return null;
+      }
+
+      final results = data['results'];
+      if (results is! List) {
+        stdout.writeln('Oväntat format på results för $name');
+        return null;
+      }
+
+      for (final result in results) {
+        if (result is Map<String, dynamic> || result is Map) {
+          final map = Map<String, dynamic>.from(result as Map);
+          final hero = HeroModel.fromJson(map);
+
+          final already = heroList.any((h) {
+            if (h.id != null && hero.id != null && h.id!.isNotEmpty && hero.id!.isNotEmpty) {
+              return h.id == hero.id;
+            }
+            return h.name.toLowerCase() == hero.name.toLowerCase();
+          });
+
+          if (!already) heroList.add(hero);
         }
+      }
 
-        final data = jsonDecode(response.body);
-
-        if (data['response'] == 'error' || data['results'] == null) {
-          stdout.writeln('Ingen hjälte hittad vid namn "$name"');
-          return null;
-        }
-
-        final results = data['results'] as List;
-
-        final newHeroes = results.map((e) => HeroModel.fromJson(e)).toList();
-        heroList.addAll(newHeroes);
-      
-        final found = newHeroes.firstWhere((hero) => hero.name.toLowerCase() == name.toLowerCase());
-        
-        return found;
-      
+      try {
+        return heroList.firstWhere((h) => h.name.toLowerCase() == query);
+      } catch (_) {
+        return null;
+      }
     } catch (e) {
       stdout.writeln('Misslyckades att hämta hjälte: $e');
       return null;
@@ -94,6 +112,7 @@ class HeroDataManager implements HeroDataManaging {
       heroList = [];
     }
   }
+  
 
   Future<void> saveToJson() async {
     final file = File("heroes.json");
@@ -106,4 +125,5 @@ class HeroDataManager implements HeroDataManaging {
 
     print("Hjälte sparad till heroes.json!");
   }
+
 }
