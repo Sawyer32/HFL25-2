@@ -116,7 +116,15 @@ class HeroDataManager implements HeroDataManaging {
 
   Future<void> saveToJson() async {
     final file = File("heroes.json");
+
+    // check if file content is the same as heroList
+    final content = await file.readAsString();
     final jsonHeroList = heroList.map((h) => h.toJson()).toList();
+
+    if (content == const JsonEncoder.withIndent('  ').convert(jsonHeroList)) {
+      print("Inga ändringar att spara.");
+      return;
+    }
 
     await file.writeAsString(
       const JsonEncoder.withIndent('  ').convert(jsonHeroList),
@@ -124,6 +132,14 @@ class HeroDataManager implements HeroDataManaging {
     );
 
     print("Hjälte sparad till heroes.json!");
+  }
+
+  Future<List<HeroModel>> goodHeroes() async {
+    return heroList.where((h) => h.biography?.alignment.toLowerCase() == 'good').toList();
+  }
+
+  Future<List<HeroModel>> badHeroes() async {
+    return heroList.where((h) => h.biography?.alignment.toLowerCase() == 'bad').toList();
   }
 
 }
