@@ -40,7 +40,7 @@ class HeroDataManager implements HeroDataManaging {
     final query = name.toLowerCase();
     try {
       return heroList.firstWhere((h) => h.name.toLowerCase() == query);
-    } catch (_) {}
+    } catch (_) {} 
 
     final DotEnv env = DotEnv(includePlatformEnvironment: true)..load();
     final apiKey = env['API_KEY'];
@@ -117,9 +117,8 @@ class HeroDataManager implements HeroDataManaging {
   Future<void> saveToJson() async {
     final file = File("heroes.json");
 
-    // check if file content is the same as heroList
-    final content = await file.readAsString();
     final jsonHeroList = heroList.map((h) => h.toJson()).toList();
+    final content = await file.readAsString();
 
     if (content == const JsonEncoder.withIndent('  ').convert(jsonHeroList)) {
       print("Inga ändringar att spara.");
