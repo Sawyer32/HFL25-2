@@ -7,7 +7,8 @@ MenuOptions mainMenu() {
   print("1. Skapa hjälte");
   print("2. Visa alla hjältar");
   print("3. Sök hjälte via api");
-  print("4. Avsluta");
+  print("4. Ta bort hjälte");
+  print("5. Avsluta");
   final input = v04_helpers.selectOption();
 
   switch (input) {
@@ -21,6 +22,8 @@ MenuOptions mainMenu() {
       v04_helpers.clearTerminal();
       return MenuOptions.searchApi;
     case "4":
+      return MenuOptions.removeHero;
+    case "5":
       return MenuOptions.exit;
     default:
       v04_helpers.clearTerminal();
@@ -46,13 +49,6 @@ Future<MenuOptions> listHeroesMenu() async {
     if (heroes.isEmpty) {
       print("Inga hjältar hittades!");
     }
-    // for (var hero in heroes) {
-    //   if (hero.biography?.alignment == "Good") {
-    //     goodHeroes.add(hero);
-    //   } else {
-    //     evilHeroes.add(hero);
-    //   }
-    // }
     stdout.writeln("=== Goda hjältar ===");
     var goodHeroes = await _manager.goodHeroes();
     for (var good in goodHeroes) {
@@ -117,6 +113,7 @@ Future<MenuOptions> listHeroesMenu() async {
         "================"
       );
     }
+    stdout.writeln("Ange '0' för att gå tillbaka.");
     final String input = v04_helpers.selectOption();
     if (input == "0") return MenuOptions.main;
 
@@ -248,6 +245,7 @@ Future<MenuOptions> searchHeroApi() async {
   v04_helpers.clearTerminal();
   while (true) {
     stdout.writeln("=== Sök bland hjältarna ===");
+    stdout.writeln("Ange '0' för att gå tillbaka.");
     stdout.write("Sökord: ");
     final String searchParam = stdin.readLineSync() ?? "";
     if (searchParam == "0") {
@@ -290,3 +288,28 @@ Future<MenuOptions> searchHeroApi() async {
     v04_helpers.clearTerminal();
   }
 }
+
+Future<MenuOptions> removeHeroMenu() async {
+  final _manager = manager.HeroDataManager();
+  v04_helpers.clearTerminal();
+  while (true) {
+    stdout.writeln("=== Ta bort hjälte ===");
+    stdout.writeln("Ange '0' för att gå tillbaka.");
+    stdout.write("Ange namnet på hjälten att ta bort: ");
+    final String nameToRemove = stdin.readLineSync() ?? "";
+    if (nameToRemove == "0") {
+      return MenuOptions.main;
+    }
+
+    final bool removed = await _manager.removeHeroByName(nameToRemove);
+    if (removed) {
+      stdout.writeln("Hjälten '$nameToRemove' har tagits bort.");
+    } else {
+      stdout.writeln("Ingen hjälte med namnet '$nameToRemove' hittades.");
+    }
+
+    stdout.writeln("Tryck Enter för att fortsätta...");
+    stdin.readLineSync();
+    v04_helpers.clearTerminal();
+  }
+} 
