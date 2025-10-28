@@ -1,5 +1,5 @@
 import 'package:v04/v04_helpers.dart' as v04_helpers;
-import 'package:v04/v04_manager.dart';
+import 'package:v04/managers/v04_manager.dart';
 import 'package:v04/v04_menu_options.dart' as v04_menu;
 import 'package:v04/v04_models.dart';
 import 'package:dotenv/dotenv.dart';

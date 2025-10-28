@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:v04/v04_helpers.dart' as v04_helpers;
 import 'package:v04/v04_models.dart';
-import 'package:v04/v04_manager.dart' as manager;
+import 'package:v04/managers/v04_manager.dart' as manager;
 
 MenuOptions mainMenu() {
   print("1. Skapa hjälte");

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:uuid/uuid.dart';
-import 'package:v04/v04_manager.dart';
+import 'package:v04/managers/v04_manager.dart';
 import 'package:v04/v04_models.dart';
 
 class MockHeroDataManager implements HeroDataManaging {

@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import 'package:v04/v04_models.dart';
 import 'package:dotenv/dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:v04/managers/network/v04_network_manager.dart';
 
 abstract class HeroDataManaging {
   Future<void> saveHero(HeroModel hero);
@@ -42,56 +43,20 @@ class HeroDataManager implements HeroDataManaging {
       return heroList.firstWhere((h) => h.name.toLowerCase() == query);
     } catch (_) {} 
 
-    final DotEnv env = DotEnv(includePlatformEnvironment: true)..load();
-    final apiKey = env['API_KEY'];
-
     try {
-      final url = Uri.https('superheroapi.com', '/api/$apiKey/search/$name');
-      final response = await http.get(url);
+      final results = await V04NetworkManager().fetchHeroByName(query);
 
-      if (response.statusCode != 200) {
-        stdout.writeln('HTTP error: ${response.statusCode}');
-        return null;
-      }
-
-      final data = jsonDecode(response.body);
-
-      if (data['response'] == 'error' || data['results'] == null) {
-        stdout.writeln('Ingen hjälte hittad vid namn "$name"');
-        return null;
-      }
-
-      final results = data['results'];
-      if (results is! List) {
-        stdout.writeln('Oväntat format på results för $name');
-        return null;
-      }
-
-      for (final result in results) {
-        if (result is Map<String, dynamic> || result is Map) {
-          final map = Map<String, dynamic>.from(result as Map);
-          final hero = HeroModel.fromJson(map);
-
-          final already = heroList.any((h) {
-            if (h.id != null && hero.id != null && h.id!.isNotEmpty && hero.id!.isNotEmpty) {
-              return h.id == hero.id;
-            }
-            return h.name.toLowerCase() == hero.name.toLowerCase();
-          });
-
-          if (!already) heroList.add(hero);
+      if (results != null && results.isNotEmpty) {
+        for (var hero in results) {
+          heroList.add(hero);
         }
       }
-
-      try {
-        return heroList.firstWhere((h) => h.name.toLowerCase() == query);
-      } catch (_) {
-        return null;
-      }
+      return results?.first;
     } catch (e) {
-      stdout.writeln('Misslyckades att hämta hjälte: $e');
-      return null;
+      print('Fel vid nätverkssökning: $e');
     }
+    
+    return null;
   }
   
   @override
