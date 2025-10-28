@@ -12,6 +12,8 @@ abstract class HeroDataManaging {
   Future<List<HeroModel>> getHeroList();
   Future<HeroModel?> searchHero(String name);
   Future<void> initializeHeroes();
+  Future<bool> removeHeroByName(String name);
+  Future<List<HeroModel>> heroesByAlignment(String alignment);
 }
 
 class HeroDataManager implements HeroDataManaging {
@@ -108,10 +110,12 @@ class HeroDataManager implements HeroDataManaging {
     }
   }
 
+  @override
   Future<List<HeroModel>> heroesByAlignment(String alignment) async {
     return heroList.where((h) => h.biography?.alignment.toLowerCase() == alignment.toLowerCase()).toList();
   }
 
+  @override
   Future<bool> removeHeroByName(String name) async {
     final initialLength = heroList.length;
     heroList.removeWhere((h) => h.name.toLowerCase() == name.toLowerCase());
