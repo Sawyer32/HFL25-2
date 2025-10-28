@@ -73,7 +73,6 @@ class HeroDataManager implements HeroDataManaging {
 
         if (content.isNotEmpty) {
           final decoded = jsonDecode(content) as List<dynamic>;
-          print('Decoded content: $decoded');
           heroList = decoded.map((e) => HeroModel.fromJson(e)).toList();
         }
       }

@@ -16,7 +16,7 @@ String selectOption() {
   return input;
 }
 
-void PrintHero(HeroModel hero) {
+void printHero(HeroModel hero) {
   stdout.writeln(
         "Name: ${hero.name}\n"
         "Intellekt: ${hero.powerstats?.intelligence}\n"
