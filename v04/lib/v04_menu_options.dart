@@ -45,17 +45,17 @@ Future<MenuOptions> listHeroesMenu() async {
       return bStrength!.compareTo(aStrength!);
     });
 
-    print("=== Lista över hjältar ===");
+    print("=== Lista över hjältar === \n");
     if (heroes.isEmpty) {
-      print("Inga hjältar hittades!");
+      print("Inga hjältar hittades! \n");
     }
-    stdout.writeln("=== Goda hjältar ===");
     var goodHeroes = await _manager.heroesByAlignment('good');
+    if (goodHeroes.isNotEmpty) stdout.writeln("=== Goda hjältar ===");
     for (var good in goodHeroes) {
       v04_helpers.printHero(good);
     }
-    stdout.writeln("=== Onda hjältar ===");
     var badHeroes = await _manager.heroesByAlignment('bad');
+    if (badHeroes.isNotEmpty) stdout.writeln("=== Onda hjältar ===");
     for (var evil in badHeroes) {
       v04_helpers.printHero(evil);
     }

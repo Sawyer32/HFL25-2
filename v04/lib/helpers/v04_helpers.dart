@@ -43,6 +43,6 @@ void printHero(HeroModel hero) {
         "Grupp: ${hero.connections?.groupAffiliation}\n"
         "Anhöriga: ${hero.connections?.relative}\n"
         "Bild: ${hero.image?.url}\n"
-        "================"
+        "================\n"
       );
 }
