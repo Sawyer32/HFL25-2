@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:uuid/uuid.dart';
 import 'package:v04/managers/v04_manager.dart';
-import 'package:v04/v04_models.dart';
+import 'package:v04/models/v04_models.dart';
 
 class MockHeroDataManager implements HeroDataManaging {
   List<HeroModel> heroes = [];

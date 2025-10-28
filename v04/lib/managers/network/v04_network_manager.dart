@@ -3,13 +3,10 @@ import 'dart:io';
 
 import 'package:dotenv/dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:v04/v04_models.dart';
+import 'package:v04/managers/network/abstracts/v04_network_abstract.dart';
+import 'package:v04/models/v04_models.dart';
 
-abstract class NetworkManager {
-  Future<List<HeroModel>?> fetchHeroByName(String name);
-}
-
-class V04NetworkManager implements NetworkManager {
+class V04NetworkManager implements NetworkManager {    
   @override
   Future<List<HeroModel>?> fetchHeroByName(String name) async {
     final DotEnv env = DotEnv(includePlatformEnvironment: true)..load();

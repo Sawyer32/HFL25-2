@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:uuid/uuid.dart';
-import 'package:v04/v04_models.dart';
+import 'package:v04/models/v04_models.dart';
 import 'package:dotenv/dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:v04/managers/network/v04_network_manager.dart';
