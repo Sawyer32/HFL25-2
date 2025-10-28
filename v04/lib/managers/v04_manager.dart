@@ -75,6 +75,8 @@ class HeroDataManager implements HeroDataManaging {
           final decoded = jsonDecode(content) as List<dynamic>;
           heroList = decoded.map((e) => HeroModel.fromJson(e)).toList();
         }
+      } else {
+        await file.create();
       }
     } catch (e) {
       print("Kunde inte läsa in heroes.json: $e");
