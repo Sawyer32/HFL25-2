@@ -50,68 +50,14 @@ Future<MenuOptions> listHeroesMenu() async {
       print("Inga hjältar hittades!");
     }
     stdout.writeln("=== Goda hjältar ===");
-    var goodHeroes = await _manager.goodHeroes();
+    var goodHeroes = await _manager.heroesByAlignment('good');
     for (var good in goodHeroes) {
-      stdout.writeln(
-        "Name: ${good.name}\n"
-        "Intellekt: ${good.powerstats?.intelligence}\n"
-        "Styrka: ${good.powerstats?.strength}\n"
-        "Snabbhet: ${good.powerstats?.speed}\n"
-        "Uthållighet: ${good.powerstats?.durability}\n"
-        "Kraft: ${good.powerstats?.power}\n"
-        "Stridsförmåga: ${good.powerstats?.combat}\n"
-        "Fullständigt namn: ${good.biography?.fullName}\n"
-        "Alter egos: ${good.biography?.alterEgo}\n"
-        "Alias: ${good.biography?.alias}\n"
-        "Födelseort: ${good.biography?.placeOfBirth}\n"
-        "Första framträdande: ${good.biography?.firstAppearance}\n"
-        "Utgivare: ${good.biography?.publisher}\n"
-        "Tillhörighet: ${good.biography?.alignment}\n"
-        "Kön: ${good.appearance?.gender}\n"
-        "Ras: ${good.appearance?.race}\n"
-        "Längd: ${good.appearance?.height}\n"
-        "Vikt: ${good.appearance?.weight}\n"
-        "Ögonfärg: ${good.appearance?.eyeColor}\n"
-        "Hårfärg: ${good.appearance?.hairColor}\n"
-        "Arbete: ${good.work?.occupation}\n"
-        "Arbetsplats: ${good.work?.base}\n"
-        "Grupp: ${good.connections?.groupAffiliation}\n"
-        "Anhöriga: ${good.connections?.relative}\n"
-        "Bild: ${good.image?.url}\n"
-        "================"
-      );
+      v04_helpers.PrintHero(good);
     }
     stdout.writeln("=== Onda hjältar ===");
-    var evilHeroes = await _manager.badHeroes();
-    for (var evil in evilHeroes) {
-      stdout.writeln(
-        "Name: ${evil.name}\n"
-        "Intellekt: ${evil.powerstats?.intelligence}\n"
-        "Styrka: ${evil.powerstats?.strength}\n"
-        "Snabbhet: ${evil.powerstats?.speed}\n"
-        "Uthållighet: ${evil.powerstats?.durability}\n"
-        "Kraft: ${evil.powerstats?.power}\n"
-        "Stridsförmåga: ${evil.powerstats?.combat}\n"
-        "Fullständigt namn: ${evil.biography?.fullName}\n"
-        "Alter egos: ${evil.biography?.alterEgo}\n"
-        "Alias: ${evil.biography?.alias}\n"
-        "Födelseort: ${evil.biography?.placeOfBirth}\n"
-        "Första framträdande: ${evil.biography?.firstAppearance}\n"
-        "Utgivare: ${evil.biography?.publisher}\n"
-        "Tillhörighet: ${evil.biography?.alignment}\n"
-        "Kön: ${evil.appearance?.gender}\n"
-        "Ras: ${evil.appearance?.race}\n"
-        "Längd: ${evil.appearance?.height}\n"
-        "Vikt: ${evil.appearance?.weight}\n"
-        "Ögonfärg: ${evil.appearance?.eyeColor}\n"
-        "Hårfärg: ${evil.appearance?.hairColor}\n"
-        "Arbete: ${evil.work?.occupation}\n"
-        "Arbetsplats: ${evil.work?.base}\n"
-        "Grupp: ${evil.connections?.groupAffiliation}\n"
-        "Anhöriga: ${evil.connections?.relative}\n"
-        "Bild: ${evil.image?.url}\n"
-        "================"
-      );
+    var badHeroes = await _manager.heroesByAlignment('bad');
+    for (var evil in badHeroes) {
+      v04_helpers.PrintHero(evil);
     }
     stdout.writeln("Ange '0' för att gå tillbaka.");
     final String input = v04_helpers.selectOption();
@@ -163,7 +109,7 @@ Future<MenuOptions> createHero() async {
   stdout.write("Alter ego (Separera med kommatecken): ");
   String alterEgo = stdin.readLineSync() ?? "";
   List<String> alterEgos = alterEgo.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
-  stdout.write("Alias: ");
+  stdout.write("Alias (Separera med kommatecken): ");
   String alias = stdin.readLineSync() ?? "";
   List<String> aliases = alias.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
   stdout.write("Födelseort: ");

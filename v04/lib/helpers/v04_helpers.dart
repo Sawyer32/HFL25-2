@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:v04/models/v04_models.dart';
@@ -17,42 +16,33 @@ String selectOption() {
   return input;
 }
 
-Future<void> saveHeroToFile(
-  HeroModel hero, {
-  String filePath = 'heroes.json',
-}) async {
-  final file = File(filePath);
-
-  List<dynamic> heroes = [];
-
-  if (await file.exists()) {
-    final content = await file.readAsString();
-
-    if (content.isNotEmpty) {
-      heroes = jsonDecode(content);
-    }
-  }
-  heroes.add(hero.toJson());
-
-  await file.writeAsString(
-    const JsonEncoder.withIndent('  ').convert(heroes),
-    encoding: utf8,
-  );
-  print("Hjälte sparad till $filePath!");
-}
-
-Future<List<dynamic>> readHeroesFromJson() async {
-  final file = File('heroes.json');
-
-  if (!await file.exists()) {
-    return [];
-  }
-
-  final content = await file.readAsString();
-
-  if (content.trim().isEmpty) {
-    return [];
-  }
-
-  return jsonDecode(content);
+void PrintHero(HeroModel hero) {
+  stdout.writeln(
+        "Name: ${hero.name}\n"
+        "Intellekt: ${hero.powerstats?.intelligence}\n"
+        "Styrka: ${hero.powerstats?.strength}\n"
+        "Snabbhet: ${hero.powerstats?.speed}\n"
+        "Uthållighet: ${hero.powerstats?.durability}\n"
+        "Kraft: ${hero.powerstats?.power}\n"
+        "Stridsförmåga: ${hero.powerstats?.combat}\n"
+        "Fullständigt namn: ${hero.biography?.fullName}\n"
+        "Alter egos: ${hero.biography?.alterEgo}\n"
+        "Alias: ${hero.biography?.alias}\n"
+        "Födelseort: ${hero.biography?.placeOfBirth}\n"
+        "Första framträdande: ${hero.biography?.firstAppearance}\n"
+        "Utgivare: ${hero.biography?.publisher}\n"
+        "Tillhörighet: ${hero.biography?.alignment}\n"
+        "Kön: ${hero.appearance?.gender}\n"
+        "Ras: ${hero.appearance?.race}\n"
+        "Längd: ${hero.appearance?.height}\n"
+        "Vikt: ${hero.appearance?.weight}\n"
+        "Ögonfärg: ${hero.appearance?.eyeColor}\n"
+        "Hårfärg: ${hero.appearance?.hairColor}\n"
+        "Arbete: ${hero.work?.occupation}\n"
+        "Arbetsplats: ${hero.work?.base}\n"
+        "Grupp: ${hero.connections?.groupAffiliation}\n"
+        "Anhöriga: ${hero.connections?.relative}\n"
+        "Bild: ${hero.image?.url}\n"
+        "================"
+      );
 }
