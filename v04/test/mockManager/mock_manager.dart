@@ -52,4 +52,18 @@ class MockHeroDataManager implements HeroDataManaging {
       return null;
     }
   }
+
+  @override
+  Future<bool> removeHeroByName(String name) async {
+    final initialLength = heroes.length;
+    heroes.removeWhere((h) => h.name.toLowerCase() == name.toLowerCase());
+    return heroes.length < initialLength;
+  }
+  
+  @override
+  Future<List<HeroModel>> heroesByAlignment(String alignment) async {
+    throw UnimplementedError();
+  }
+
+  
 }
