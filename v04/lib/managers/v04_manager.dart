@@ -32,7 +32,9 @@ class HeroDataManager implements HeroDataManaging {
   @override
   Future<void> saveHero(HeroModel hero) async {
     hero.id ??= _uuid.v4();
-    heroList.add(hero);
+    if (!heroList.any((h) => h.name.toLowerCase() == hero.name.toLowerCase())) {
+      heroList.add(hero);
+    }
     await saveToJson();  
   }
 
@@ -48,6 +50,9 @@ class HeroDataManager implements HeroDataManaging {
 
       if (results != null && results.isNotEmpty) {
         for (var hero in results) {
+          if (heroList.any((h) => h.name.toLowerCase() == hero.name.toLowerCase())) {
+            continue;
+          }
           heroList.add(hero);
         }
       }
@@ -81,29 +86,29 @@ class HeroDataManager implements HeroDataManaging {
 
   Future<void> saveToJson() async {
     final file = File("heroes.json");
-
     final jsonHeroList = heroList.map((h) => h.toJson()).toList();
-    final content = await file.readAsString();
 
-    if (content == const JsonEncoder.withIndent('  ').convert(jsonHeroList)) {
-      print("Inga ändringar att spara.");
-      return;
+    try {
+      final content = await file.readAsString();
+
+      if (content == const JsonEncoder.withIndent('  ').convert(jsonHeroList)) {
+        print("Inga ändringar att spara.");
+        return;
+      }
+
+      await file.writeAsString(
+        const JsonEncoder.withIndent('  ').convert(jsonHeroList),
+        encoding: utf8,
+      );
+
+      print("Hjälte sparad till heroes.json!");
+    } catch (e) {
+      print("Kunde inte spara till heroes.json: $e");
     }
-
-    await file.writeAsString(
-      const JsonEncoder.withIndent('  ').convert(jsonHeroList),
-      encoding: utf8,
-    );
-
-    print("Hjälte sparad till heroes.json!");
   }
 
-  Future<List<HeroModel>> goodHeroes() async {
-    return heroList.where((h) => h.biography?.alignment.toLowerCase() == 'good').toList();
-  }
-
-  Future<List<HeroModel>> badHeroes() async {
-    return heroList.where((h) => h.biography?.alignment.toLowerCase() == 'bad').toList();
+  Future<List<HeroModel>> heroesByAlignment(String alignment) async {
+    return heroList.where((h) => h.biography?.alignment.toLowerCase() == alignment.toLowerCase()).toList();
   }
 
   Future<bool> removeHeroByName(String name) async {
